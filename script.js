@@ -29,7 +29,7 @@
     })
     .finally(() => {
       showPopup();
-      setTimeout(hidePopup, 5000);
+      setTimeout(hidePopup, 3000);
     });
 
   closeBtn.addEventListener('click', hidePopup);
