@@ -1,32 +1,42 @@
-// Visitor counter popup (static number — set it yourself below)
+// Visitor counter popup (real incrementing count — free, no signup)
 (function () {
   const popup = document.getElementById('visitorPopup');
   const closeBtn = document.getElementById('visitorClose');
   const numberEl = document.getElementById('visitorNumber');
   if (!popup) return;
 
-  // 👇 Change this number whenever you want
-  const VISITOR_COUNT = 46;
-
-  numberEl.textContent = VISITOR_COUNT.toLocaleString();
+  const KEY = 'svaibhav15656-create-portfolio-visits';
+  let typewriterStarted = false;
 
   function showPopup() {
     popup.classList.add('visible');
   }
   function hidePopup() {
     popup.classList.remove('visible');
+    if (!typewriterStarted) {
+      typewriterStarted = true;
+      startTypewriter();
+    }
   }
 
-  showPopup();
-  // auto-close after 5 seconds
-  setTimeout(hidePopup, 5000);
+  fetch(`https://countapi.mileshilliard.com/api/v1/hit/${KEY}`)
+    .then((res) => res.json())
+    .then((data) => {
+      numberEl.textContent = Number(data.value).toLocaleString();
+    })
+    .catch(() => {
+      numberEl.textContent = '—';
+    })
+    .finally(() => {
+      showPopup();
+      setTimeout(hidePopup, 5000);
+    });
 
   closeBtn.addEventListener('click', hidePopup);
   popup.addEventListener('click', (e) => {
     if (e.target === popup) hidePopup();
   });
 })();
-
 // Background music toggle
 const bgMusic = document.getElementById("bgMusic");
 const musicToggle = document.getElementById("musicToggle");
@@ -330,9 +340,11 @@ if (cursorGlow) {
   animateGlow();
 }
 
-// Typewriter effect for hero heading
+// Typewriter effect for hero heading — starts only after popup closes
 const typewriterEl = document.getElementById('typewriter');
-if (typewriterEl) {
+
+function startTypewriter() {
+  if (!typewriterEl) return;
   const plainPart = "Hi, I'm ";
   const accentPart = "Vaibhav";
   const fullText = plainPart + accentPart;
@@ -355,7 +367,6 @@ if (typewriterEl) {
   }
   typeChar();
 }
-
 // Hover tilt / parallax effect on hero photo (Lando Norris style)
 const wrap = document.getElementById('photoWrap');
 const card = document.getElementById('photoCard');
