@@ -1,3 +1,32 @@
+// Visitor counter popup (static number — set it yourself below)
+(function () {
+  const popup = document.getElementById('visitorPopup');
+  const closeBtn = document.getElementById('visitorClose');
+  const numberEl = document.getElementById('visitorNumber');
+  if (!popup) return;
+
+  // 👇 Change this number whenever you want
+  const VISITOR_COUNT = 46;
+
+  numberEl.textContent = VISITOR_COUNT.toLocaleString();
+
+  function showPopup() {
+    popup.classList.add('visible');
+  }
+  function hidePopup() {
+    popup.classList.remove('visible');
+  }
+
+  showPopup();
+  // auto-close after 5 seconds
+  setTimeout(hidePopup, 5000);
+
+  closeBtn.addEventListener('click', hidePopup);
+  popup.addEventListener('click', (e) => {
+    if (e.target === popup) hidePopup();
+  });
+})();
+
 // Background music toggle
 const bgMusic = document.getElementById("bgMusic");
 const musicToggle = document.getElementById("musicToggle");
