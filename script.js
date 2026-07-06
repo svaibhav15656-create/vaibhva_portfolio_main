@@ -167,40 +167,6 @@ if (projectTrack) {
   render();
 }
 
-// Rotating skills carousel
-const skillsTrack = document.getElementById('skillsTrack');
-const skillsNext = document.getElementById('skillsNext');
-
-if (skillsTrack && skillsNext) {
-  let isAnimating = false;
-
-  skillsNext.addEventListener('click', () => {
-    if (isAnimating) return;
-    isAnimating = true;
-
-    const firstCard = skillsTrack.children[0];
-    const cardWidth = firstCard.getBoundingClientRect().width;
-    const gap = parseFloat(getComputedStyle(skillsTrack).gap) || 20;
-    const shiftAmount = cardWidth + gap;
-
-    skillsTrack.style.transform = `translateX(-${shiftAmount}px)`;
-
-    const onTransitionEnd = () => {
-      skillsTrack.removeEventListener('transitionend', onTransitionEnd);
-      // Move the first card to the end, then reset position instantly
-      skillsTrack.appendChild(firstCard);
-      skillsTrack.style.transition = 'none';
-      skillsTrack.style.transform = 'translateX(0)';
-      // Force reflow so the transition re-enables cleanly next click
-      void skillsTrack.offsetHeight;
-      skillsTrack.style.transition = '';
-      isAnimating = false;
-    };
-
-    skillsTrack.addEventListener('transitionend', onTransitionEnd);
-  });
-}
-
 // Floating "click anywhere" hint — drifts slowly in a random direction
 // and bounces off the edges of the screen, like a DVD logo. Disappears
 // as soon as the user clicks/taps/presses a key anywhere.
