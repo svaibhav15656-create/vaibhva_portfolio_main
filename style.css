@@ -704,3 +704,174 @@ footer {
   section h2 { font-size:26px; }
   .nav-links { display:none; }
 }
+/* ============================================
+   NEW ADDITIONS — scroll effects & interactions
+   ============================================ */
+
+/* Scroll progress bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  z-index: 3000;
+  transition: width 0.1s ease-out;
+}
+
+/* Section dot indicator */
+.section-dots {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 900;
+}
+.section-dots .sdot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--border-strong);
+  cursor: pointer;
+  transition: background 0.25s, transform 0.25s;
+}
+.section-dots .sdot.active {
+  background: var(--accent);
+  transform: scale(1.4);
+}
+@media (max-width: 900px) {
+  .section-dots { display: none; }
+}
+
+/* Staggered reveal for tech items and timeline items */
+.tech-item.stagger-hidden,
+.timeline-item.stagger-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.tech-item.stagger-visible,
+.timeline-item.stagger-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+/* Magnetic buttons — smooth return transition */
+.social-row a,
+.carousel-arrow {
+  transition: transform 0.15s ease-out, border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+/* Heading text reveal (word spans) */
+.reveal-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.4em);
+  filter: blur(4px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out, filter 0.5s ease-out;
+}
+.reveal-word.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Subtle film-grain overlay */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* Scroll-scrub hint on project carousel (optional subtle cue) */
+.project-carousel { scroll-snap-type: none; }
+
+/* ============================================
+   NEW ADDITIONS ROUND 2 — scramble, konami, marquee
+   ============================================ */
+
+/* Marquee tech ticker strip */
+.marquee-strip {
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg-alt);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+}
+.marquee-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  animation: marquee-scroll 22s linear infinite;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+.marquee-track span {
+  padding: 0 2px;
+}
+.marquee-track .msep {
+  color: var(--accent);
+}
+.marquee-strip:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Text scramble target — just ensures monospace-safe reflow during scramble */
+.role {
+  display: inline-block;
+}
+
+/* Konami code disco mode */
+body.disco-mode {
+  animation: disco-hue 3s linear infinite;
+}
+@keyframes disco-hue {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+.konami-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--card);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 12px 22px;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 30px rgba(224,160,82,0.25);
+  z-index: 5000;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+}
+.konami-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 640px) {
+  .marquee-track { font-size: 12px; }
+}

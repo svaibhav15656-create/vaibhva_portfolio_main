@@ -379,3 +379,300 @@ sections.forEach(section => {
   section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
   observer.observe(section);
 });
+/* ============================================
+   NEW ADDITIONS — scroll effects & interactions
+   ============================================ */
+
+// 1. Scroll progress bar
+(function () {
+  const scrollProgress = document.getElementById('scrollProgress');
+  if (!scrollProgress) return;
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    scrollProgress.style.width = pct + '%';
+  });
+})();
+
+// 2. Count-up animation for stat numbers (8+, 2+, 100%)
+(function () {
+  const statNums = document.querySelectorAll('.stat-num');
+  if (!statNums.length) return;
+
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const text = el.textContent.trim();
+        const suffix = text.replace(/[0-9]/g, '');
+        const target = parseInt(text.replace(/[^0-9]/g, ''), 10);
+        if (isNaN(target)) return;
+
+        let current = 0;
+        const duration = 1200;
+        const stepTime = 20;
+        const steps = duration / stepTime;
+        const increment = target / steps;
+
+        const counter = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            el.textContent = target + suffix;
+            clearInterval(counter);
+          } else {
+            el.textContent = Math.floor(current) + suffix;
+          }
+        }, stepTime);
+
+        statObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  statNums.forEach(el => statObserver.observe(el));
+})();
+
+// 3. Staggered reveal for tech items and timeline items
+(function () {
+  function staggerReveal(selector, groupSelector, delayStep) {
+    const items = document.querySelectorAll(selector);
+    if (!items.length) return;
+    items.forEach(item => item.classList.add('stagger-hidden'));
+
+    const groupObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const parent = entry.target;
+          const children = Array.from(parent.querySelectorAll(selector));
+          children.forEach((child, i) => {
+            setTimeout(() => {
+              child.classList.remove('stagger-hidden');
+              child.classList.add('stagger-visible');
+            }, i * delayStep);
+          });
+          groupObserver.unobserve(parent);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll(groupSelector).forEach(parent => {
+      groupObserver.observe(parent);
+    });
+  }
+
+  staggerReveal('.tech-item', '.tech-grid', 50);
+  staggerReveal('.timeline-item', '.timeline', 120);
+})();
+
+// 4. Section dot indicator
+(function () {
+  const sectionDotsWrap = document.getElementById('sectionDots');
+  if (!sectionDotsWrap) return;
+
+  const trackedSections = document.querySelectorAll('main section');
+  if (!trackedSections.length) return;
+
+  trackedSections.forEach(sec => {
+    const dot = document.createElement('span');
+    dot.className = 'sdot';
+    dot.addEventListener('click', () => {
+      sec.scrollIntoView({ behavior: 'smooth' });
+    });
+    sectionDotsWrap.appendChild(dot);
+  });
+  const sdots = Array.from(sectionDotsWrap.children);
+
+  const sectionDotObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const idx = Array.from(trackedSections).indexOf(entry.target);
+      if (entry.isIntersecting && idx !== -1) {
+        sdots.forEach(d => d.classList.remove('active'));
+        sdots[idx].classList.add('active');
+      }
+    });
+  }, { threshold: 0.5 });
+
+  trackedSections.forEach(sec => sectionDotObserver.observe(sec));
+})();
+
+// 5. Magnetic hover effect for social links and carousel arrows
+(function () {
+  function applyMagnetic(selector, strength) {
+    document.querySelectorAll(selector).forEach(el => {
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        el.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'translate(0, 0)';
+      });
+    });
+  }
+
+  applyMagnetic('.social-row a', 0.3);
+  applyMagnetic('.carousel-arrow', 0.35);
+})();
+
+// 6. Heading text reveal — word by word as section headings enter view
+(function () {
+  const headings = document.querySelectorAll('main section h2');
+  if (!headings.length) return;
+
+  headings.forEach(h => {
+    const words = h.textContent.trim().split(/\s+/);
+    h.innerHTML = words
+      .map(w => `<span class="reveal-word">${w}</span>`)
+      .join(' ');
+  });
+
+  const headingObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const spans = entry.target.querySelectorAll('.reveal-word');
+        spans.forEach((span, i) => {
+          setTimeout(() => {
+            span.classList.add('reveal-visible');
+          }, i * 60);
+        });
+        headingObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  headings.forEach(h => headingObserver.observe(h));
+})();
+
+// 7. Subtle film-grain overlay across the whole page
+(function () {
+  const grain = document.createElement('div');
+  grain.className = 'grain-overlay';
+  document.body.appendChild(grain);
+})();
+
+// 8. Scroll-scrub the project coverflow carousel with mouse wheel
+(function () {
+  const track = document.getElementById('projectTrack');
+  const carousel = document.querySelector('.project-carousel');
+  if (!track || !carousel) return;
+
+  let scrubCooldown = false;
+
+  carousel.addEventListener('wheel', (e) => {
+    // Only hijack wheel when scrolling mostly horizontally-intended or
+    // holding shift; otherwise let the page scroll normally.
+    // Here we use vertical wheel delta while hovered on the carousel
+    // to move the coverflow, with a cooldown so it steps one card at a time.
+    if (scrubCooldown) return;
+    e.preventDefault();
+
+    const goingNext = e.deltaY > 0;
+    const nextBtn = document.getElementById('projNext');
+    const prevBtn = document.getElementById('projPrev');
+    if (goingNext && nextBtn) nextBtn.click();
+    if (!goingNext && prevBtn) prevBtn.click();
+
+    scrubCooldown = true;
+    setTimeout(() => { scrubCooldown = false; }, 450);
+  }, { passive: false });
+})();
+
+/* ============================================
+   NEW ADDITIONS ROUND 2 — scramble, konami, marquee
+   ============================================ */
+
+// 9. Text scramble effect on hero role text
+(function () {
+  const roleEl = document.querySelector('.role');
+  if (!roleEl) return;
+
+  const finalHTML = roleEl.innerHTML;
+  // Extract plain text version (strip the <span class="dot">·</span> markup for scrambling,
+  // but keep final HTML to restore exactly at the end)
+  const finalText = roleEl.textContent;
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!<>-_\\/[]{}—=+*^?#';
+
+  let frame = 0;
+  const totalFrames = 24;
+  let scrambleInterval = null;
+
+  function runScramble() {
+    scrambleInterval = setInterval(() => {
+      let output = '';
+      const revealCount = Math.floor((frame / totalFrames) * finalText.length);
+
+      for (let i = 0; i < finalText.length; i++) {
+        if (finalText[i] === ' ') {
+          output += ' ';
+        } else if (i < revealCount) {
+          output += finalText[i];
+        } else {
+          output += chars[Math.floor(Math.random() * chars.length)];
+        }
+      }
+
+      roleEl.textContent = output;
+      frame++;
+
+      if (frame > totalFrames) {
+        clearInterval(scrambleInterval);
+        roleEl.innerHTML = finalHTML; // restore exact original markup (with the styled dot)
+      }
+    }, 35);
+  }
+
+  // Trigger once hero is visible (page load area), only once
+  const roleObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        runScramble();
+        roleObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  roleObserver.observe(roleEl);
+})();
+
+// 10. Konami code easter egg
+(function () {
+  const konamiSequence = [
+    'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+    'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+    'b', 'a'
+  ];
+  let position = 0;
+
+  function showKonamiToast() {
+    const toast = document.createElement('div');
+    toast.className = 'konami-toast';
+    toast.textContent = '🎉 Konami code activated — disco mode!';
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('show'));
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 400);
+    }, 3500);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (key === konamiSequence[position]) {
+      position++;
+      if (position === konamiSequence.length) {
+        document.body.classList.toggle('disco-mode');
+        showKonamiToast();
+        position = 0;
+      }
+    } else {
+      position = key === konamiSequence[0] ? 1 : 0;
+    }
+  });
+})();
+
+// 11. Marquee strip — pause on hover is handled purely via CSS (:hover),
+// no JS needed. Included here only as a placeholder in case a manual
+// pause/play toggle is wanted later.
