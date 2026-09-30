@@ -1,417 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vaibhav S — Backend Engineer &amp; Developer Portfolio</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Vaibhav S &mdash; Backend &amp; AI Automation Engineer building Java services, microservices, LLM workflows, and RAG applications.">
+  <meta property="og:title" content="Vaibhav S &mdash; Backend &amp; AI Automation Engineer">
+  <meta property="og:description" content="Backend engineering, microservices, LLM workflows, RAG, and AI automation.">
+  <meta property="og:image" content="assets/vaibhav.jpg">
+  <meta property="og:url" content="https://vaibhav-portfolio-main-seven.vercel.app">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Vaibhav S &mdash; Backend &amp; AI Automation Engineer</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<!-- Scroll progress bar -->
-<div id="scrollProgress" class="scroll-progress"></div>
-
-<!-- Section dot indicator -->
-<div id="sectionDots" class="section-dots"></div>
-
-<!-- Visitor count popup -->
-<div id="visitorPopup" class="visitor-popup">
-  <div class="visitor-popup-card">
-    <button id="visitorClose" class="visitor-close" aria-label="Close">×</button>
-    <div class="visitor-photo-wrap">
-      <img src="assets/vaibhav.jpg" alt="Vaibhav S">
-    </div>
-    <p class="visitor-greet">Welcome to my portfolio 👋</p>
-    <p class="visitor-count">
-      Total Visits <span id="visitorNumber">…</span>
-    </p>
-  </div>
-</div>
-
-<canvas id="waterCanvas" class="water-canvas"></canvas>
-
-<div id="clickHint" class="click-hint">Click anywhere on the screen for the vibe</div>
-
-<div class="cursor-glow" id="cursorGlow"></div>
-
-<button id="musicToggle" class="music-toggle" aria-label="Toggle background music">
-  <svg id="musicIconOn" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M9 18V5l12-2v13"></path>
-    <circle cx="6" cy="18" r="3"></circle>
-    <circle cx="18" cy="16" r="3"></circle>
-  </svg>
-  <svg id="musicIconOff" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
-    <path d="M9 18V5l12-2v13"></path>
-    <circle cx="6" cy="18" r="3"></circle>
-    <circle cx="18" cy="16" r="3"></circle>
-    <line x1="3" y1="3" x2="21" y2="21"></line>
-  </svg>
-</button>
-<audio
-    id="bgMusic"
-    src="assets/song.mp3"
-    loop
-    preload="auto">
-</audio>
-
-<nav id="navbar">
-  <div class="nav-inner">
-    <span class="logo">vaibhav<span class="accent">
+  <div id="scrollProgress" class="scroll-progress" aria-hidden="true"></div>
+  <nav id="navbar" aria-label="Main navigation"><div class="nav-inner">
+    <a class="logo" href="#hero" aria-label="Vaibhav home">vaibhav<span class="accent">.</span></a>
     <ul class="nav-links">
-      <li><a href="#about">about</a></li>
-      <li><a href="#skills">skills</a></li>
-      <li><a href="#projects">projects</a></li>
-      <li><a href="#experience">experience</a></li>
-      <li><a href="#contact">contact</a></li>
+      <li><a href="#about">about</a></li><li><a href="#skills">skills</a></li><li><a href="#ai">ai</a></li><li><a href="#projects">projects</a></li><li><a href="#experience">experience</a></li><li><a href="#contact">contact</a></li><li><a href="assets/resume.pdf" target="_blank" rel="noopener noreferrer">resume</a></li>
     </ul>
-  </div>
-</nav>
-
-<header id="hero">
-  <div class="hero-inner">
-    <div class="hero-text">
-      <p class="eyebrow">// welcome to my portfolio</p>
-      <h1><span id="typewriter"></span><span class="cursor">|</span></h1>
-      <p class="role">Backend Engineer <span class="dot">·</span> Tech Enthusiast</p>
-      <p class="tags">Web Developer &nbsp;JS&nbsp;·&nbsp;Java&nbsp;·&nbsp;SpringBoot&nbsp;·&nbsp;UI/UX&nbsp;·&nbsp;Open Source</p>
-
+  </div></nav>
+  <header id="hero"><div class="hero-inner">
+    <div class="hero-text"><p class="eyebrow">// welcome to my portfolio</p>
+      <h1>Hi, I'm <span class="accent">Vaibhav</span></h1>
+      <p class="role">Backend &amp; AI Automation Engineer</p>
+      <p class="tags">Java &middot; Spring Boot &middot; Microservices &middot; LLM Workflows &middot; RAG &middot; LangChain &middot; LangGraph</p>
       <div class="info-row">
-        <div class="info-item"><span class="ico"></span><div><span class="label">College</span><span class="value">SRM IST</span></div></div>
-        <div class="info-item"><span class="ico"></span><div><span class="label">Expertise</span><span class="value">Backend</span></div></div>
-        <div class="info-item"><span class="ico"></span><div><span class="label">Contact</span><span class="value">s.vaibhav15656@gmail.com</span></div></div>
+        <div class="info-item"><span class="label">College</span><span class="value">SRM IST</span></div>
+        <div class="info-item"><span class="label">Expertise</span><span class="value">Backend &amp; AI Automation</span></div>
+        <div class="info-item"><span class="label">Location</span><span class="value">Chennai, India</span></div>
+        <div class="info-item"><span class="label">Contact</span><a class="value" href="mailto:s.vaibhav15656@gmail.com">s.vaibhav15656@gmail.com</a></div>
       </div>
-
+      <div class="hero-actions"><a class="button" href="assets/resume.pdf" download>Download Resume</a><a class="button button-outline" href="assets/resume.pdf" target="_blank" rel="noopener noreferrer">View Resume</a></div>
       <div class="social-row">
-        <a href="https://github.com/svaibhav15656-create" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://www.linkedin.com/in/s-vaibhav07/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="mailto:s.vaibhav15656@gmail.com">Email</a>
-        <a href="https://www.instagram.com/__vaibhav.17/?hl=en" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://leetcode.com/u/vaibhav_vvv/" target="_blank" rel="noopener">LeetCode</a>
+        <a href="https://github.com/svaibhav15656-create" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.linkedin.com/in/s-vaibhav07/" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="mailto:s.vaibhav15656@gmail.com">Email</a><a href="https://www.instagram.com/__vaibhav.17/?hl=en" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://leetcode.com/u/vaibhav_vvv/" target="_blank" rel="noopener noreferrer">LeetCode</a>
       </div>
     </div>
-
-    <div class="hero-photo">
-      <div class="photo-wrap" id="photoWrap">
-        <div class="photo-card" id="photoCard">
-          <div class="photo-inner" id="photoInner">
-            <img src="assets/vaibhav.jpg" alt="Vaibhav S">
-          </div>
-          <div class="shine" id="shine"></div>
-        </div>
-      </div>
-      <span class="status"><span class="blink"></span> available for work</span>
-    </div>
-  </div>
-</header>
-
-<!-- Marquee tech ticker strip -->
-<div class="marquee-strip" id="marqueeStrip">
-  <div class="marquee-track">
-    <span>Backend Engineer</span><span class="msep">•</span>
-    <span>Java</span><span class="msep">•</span>
-    <span>Spring Boot</span><span class="msep">•</span>
-    <span>Microservices</span><span class="msep">•</span>
-    <span>PostgreSQL</span><span class="msep">•</span>
-    <span>Redis</span><span class="msep">•</span>
-    <span>Docker</span><span class="msep">•</span>
-    <span>Open Source</span><span class="msep">•</span>
-    <span>System Design</span><span class="msep">•</span>
-    <span>Backend Engineer</span><span class="msep">•</span>
-    <span>Java</span><span class="msep">•</span>
-    <span>Spring Boot</span><span class="msep">•</span>
-    <span>Microservices</span><span class="msep">•</span>
-    <span>PostgreSQL</span><span class="msep">•</span>
-    <span>Redis</span><span class="msep">•</span>
-    <span>Docker</span><span class="msep">•</span>
-    <span>Open Source</span><span class="msep">•</span>
-    <span>System Design</span><span class="msep">•</span>
-  </div>
-</div>
-
-<main>
-
-  <section id="about">
-    <p class="section-eyebrow">// about me</p>
-    <h2>Who I Am</h2>
-    <p class="about-text">Hey! I'm Vaibhav, a student developer who loves building things on the internet. From clean UIs to solid backends, I enjoy every layer of the stack. Right now, I'm going deep into system design and distributed systems, exploring scalability, caching strategies, message queues, and database trade-offs. I build and deploy full-stack projects end to end, from API design and authentication to CI/CD and cloud deployment, and iterate on them based on real feedback. Always up for a hackathon, an open-source contribution, or a cool collab</p>
-
-    <div class="stat-grid">
-      <div class="stat"><span class="stat-num">8+</span><span class="stat-label">Projects Shipped</span></div>
-      <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Years Building</span></div>
-      <div class="stat"><span class="stat-num">5+</span><span class="stat-label">Hackathons</span></div>
-    </div>
-  </section>
-
-  <section id="skills">
-    <p class="section-eyebrow">// skills</p>
-    <div class="skills-pill-wrap">
-      <span class="skills-pill">Skills</span>
-    </div>
-    <h2 class="skills-heading">The skills, tools and technologies I am really good at:</h2>
-
-    <div class="tech-groups">
-
-      <div class="tech-group">
-        <p class="tech-cat">Languages</p>
-        <div class="tech-grid">
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java"></div>
-            <span class="tech-label">Java</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python"></div>
-            <span class="tech-label">Python</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript"></div>
-            <span class="tech-label">JavaScript</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-group">
-        <p class="tech-cat">Backend</p>
-        <div class="tech-grid">
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" alt="Spring Boot"></div>
-            <span class="tech-label">Spring Boot</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico tech-badge">MVC</div>
-            <span class="tech-label">Spring MVC</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico tech-badge">JPA</div>
-            <span class="tech-label">Spring Data JPA</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico tech-badge">SEC</div>
-            <span class="tech-label">Spring Security</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/hibernate/hibernate-original.svg" alt="Hibernate"></div>
-            <span class="tech-label">Hibernate</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.simpleicons.org/jsonwebtokens" alt="JWT"></div>
-            <span class="tech-label">JWT Auth</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico tech-badge">RBAC</div>
-            <span class="tech-label">RBAC</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-group">
-        <p class="tech-cat">Frontend</p>
-        <div class="tech-grid">
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML"></div>
-            <span class="tech-label">HTML</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS"></div>
-            <span class="tech-label">CSS</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript"></div>
-            <span class="tech-label">JavaScript</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-group">
-        <p class="tech-cat">AI / ML</p>
-        <div class="tech-grid">
-          <div class="tech-item">
-            <div class="tech-ico tech-badge">ML</div>
-            <span class="tech-label">Machine Learning</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico tech-badge">DL</div>
-            <span class="tech-label">Deep Learning</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico tech-badge">DP</div>
-            <span class="tech-label">Data Preprocessing</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg" alt="Scikit-learn"></div>
-            <span class="tech-label">Scikit-learn</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-group">
-        <p class="tech-cat">Databases &amp; Tools</p>
-        <div class="tech-grid">
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="MySQL"></div>
-            <span class="tech-label">MySQL</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" alt="MongoDB"></div>
-            <span class="tech-label">MongoDB</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg" alt="Redis"></div>
-            <span class="tech-label">Redis</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.simpleicons.org/neon" alt="Neon DB"></div>
-            <span class="tech-label">Neon DB</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.simpleicons.org/supabase" alt="Supabase DB"></div>
-            <span class="tech-label">Supabase DB</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tech-group">
-        <p class="tech-cat">Tools &amp; Platforms</p>
-        <div class="tech-grid">
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git"></div>
-            <span class="tech-label">Git</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub"></div>
-            <span class="tech-label">GitHub</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker"></div>
-            <span class="tech-label">Docker</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" alt="Postman"></div>
-            <span class="tech-label">Postman</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original.svg" alt="Jupyter Notebook"></div>
-            <span class="tech-label">Jupyter Notebook</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-ico"><img src="https://cdn.simpleicons.org/googlecolab" alt="Google Colab"></div>
-            <span class="tech-label">Google Colab</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section id="projects">
-    <p class="section-eyebrow">// portfolio</p>
-    <h2>Featured Projects</h2>
-
-    <div class="project-carousel">
-      <div class="project-glow"></div>
-      <div class="project-track" id="projectTrack">
-        <article class="project-card">
-          <span class="project-tag">Industry relevant</span>
-          <span class="project-num">01</span>
-          <h3>CI Risk Predictor</h3>
-          <p>Predicts CI/CD pipeline failure from commit patterns — real-time VS Code feedback.</p>
-          <div class="stack">ML</div>
-          <a href="https://github.com/svaibhav15656-create/ci-risk-predictor.git" target="_blank" rel="noopener">GitHub Repo →</a>
-        </article>
-
-        <article class="project-card">
-          <span class="project-tag">Full Stack</span>
-          <span class="project-num">02</span>
-          <h3>Primetrade App</h3>
-          <p>A full-stack web application built for seamless task management.</p>
-          <div class="stack">JS · CSS · SQL</div>
-          <a href="https://github.com/svaibhav15656-create/primetrade-app.git" target="_blank" rel="noopener">GitHub Repo →</a>
-        </article>
-
-        <article class="project-card">
-          <span class="project-tag">Industry Relevant</span>
-          <span class="project-num">03</span>
-          <h3>PR Review Time Predictor</h3>
-          <p>Predicts GitHub PR merge time with 76% accuracy — trained on 1500+ real PRs.</p>
-          <div class="stack">LightGBM · REST API · GitHub</div>
-          <a href="https://github.com/svaibhav15656-create/PR-PREDICTOR-EXTENSION.git" target="_blank" rel="noopener">GitHub Repo →</a>
-        </article>
-
-        <article class="project-card">
-          <span class="project-tag">Utility</span>
-          <span class="project-num">04</span>
-          <h3>Smart Attendance System</h3>
-          <p>A full-stack web application that eliminates proxy attendance using multi-layer biometric verification.</p>
-          <div class="stack">JWT · face-api · Java</div>
-          <a href="https://github.com/svaibhav15656-create/smart_attendance_system.git" target="_blank" rel="noopener">GitHub Repo →</a>
-        </article>
-
-        <article class="project-card">
-          <span class="project-tag">AI / ML</span>
-          <span class="project-num">05</span>
-          <h3>AI Decision Copilot</h3>
-          <p>AI-powered business analytics system that analyzes datasets, detects missing values, and generates profit-impact recommendations.</p>
-          <div class="stack">ML · Python</div>
-          <a href="https://github.com/svaibhav15656-create/ai-decision-copilot.git" target="_blank" rel="noopener">GitHub Repo →</a>
-        </article>
-      </div>
-
-      <div class="carousel-controls">
-        <button id="projPrev" class="carousel-arrow small" aria-label="Previous project">‹</button>
-        <div class="carousel-dots" id="projDots"></div>
-        <button id="projNext" class="carousel-arrow small" aria-label="Next project">›</button>
-      </div>
-    </div>
-  </section>
-
-  <section id="experience">
-    <p class="section-eyebrow">// journey</p>
-    <h2>Experience &amp; Education</h2>
-
-    <div class="timeline">
-      <div class="timeline-item">
-        <span class="timeline-date">2026 – Present</span>
-        <div class="timeline-body">
-          <h3>AI &amp; Data Analyst Intern</h3>
-          <span class="timeline-org">XyLofy</span>
-          <p>Using machine learning models for prediction and analysis tasks. Performed data cleaning, preprocessing, and exploratory data analysis.</p>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <span class="timeline-date">2025 – Dec</span>
-        <div class="timeline-body">
-          <h3>AI and Prompt Engineer Intern</h3>
-          <span class="timeline-org">Vaultofcode</span>
-          <p>Worked on AI-based workflow automation and prompt optimization for LLM-based applications.</p>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <span class="timeline-date">2024 – 2028</span>
-        <div class="timeline-body">
-          <h3>Computer Science Student, 3rd Year</h3>
-          <span class="timeline-org">SRM Institute of Science and Technology</span>
-          <p>Studying algorithms, data structures, databases, and software engineering.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <p class="section-eyebrow">// say hello</p>
-    <h2>Let's Work Together</h2>
-    <p class="contact-text">Have a project in mind or just want to connect? I'm always open to new opportunities and collaborations.</p>
-    <a class="email-link" href="mailto:s.vaibhav15656@gmail.com">s.vaibhav15656@gmail.com</a>
-    <div class="social-row">
-      <a href="https://github.com/svaibhav15656-create" target="_blank" rel="noopener">GitHub Profile</a>
-      <a href="https://www.linkedin.com/in/s-vaibhav07/" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
-  </section>
-
-</main>
-
-<footer>
-  <p>Built with 🤍 by Vaibhav.</p>
-</footer>
-
-<script src="script.js"></script>
+    <div class="hero-photo"><div class="photo-wrap"><div class="photo-card"><img src="assets/vaibhav.jpg" alt="Portrait of Vaibhav" width="280" height="320"></div></div><span class="status">Backend Intern @ HCL Technologies</span></div>
+  </div></header>
+  <div class="marquee-strip" aria-label="Technologies"><div class="marquee-track"><span>Backend Engineer</span><span class="msep" aria-hidden="true">/</span><span>Java</span><span class="msep" aria-hidden="true">/</span><span>Spring Boot</span><span class="msep" aria-hidden="true">/</span><span>Microservices</span><span class="msep" aria-hidden="true">/</span><span>Kafka</span><span class="msep" aria-hidden="true">/</span><span>PostgreSQL</span><span class="msep" aria-hidden="true">/</span><span>Redis</span><span class="msep" aria-hidden="true">/</span><span>Docker</span><span class="msep" aria-hidden="true">/</span><span>RAG</span><span class="msep" aria-hidden="true">/</span><span>LangChain</span><span class="msep" aria-hidden="true">/</span><span>LangGraph</span><span class="msep" aria-hidden="true">/</span><span>LLM Workflows</span><span class="msep" aria-hidden="true">/</span><span>AI Automation</span><span class="msep" aria-hidden="true">/</span><span>System Design</span><span class="msep" aria-hidden="true">/</span><span>Backend Engineer</span><span class="msep" aria-hidden="true">/</span><span>Java</span><span class="msep" aria-hidden="true">/</span><span>Spring Boot</span><span class="msep" aria-hidden="true">/</span><span>Microservices</span><span class="msep" aria-hidden="true">/</span><span>Kafka</span><span class="msep" aria-hidden="true">/</span><span>PostgreSQL</span><span class="msep" aria-hidden="true">/</span><span>Redis</span><span class="msep" aria-hidden="true">/</span><span>Docker</span><span class="msep" aria-hidden="true">/</span><span>RAG</span><span class="msep" aria-hidden="true">/</span><span>LangChain</span><span class="msep" aria-hidden="true">/</span><span>LangGraph</span><span class="msep" aria-hidden="true">/</span><span>LLM Workflows</span><span class="msep" aria-hidden="true">/</span><span>AI Automation</span><span class="msep" aria-hidden="true">/</span><span>System Design</span><span class="msep" aria-hidden="true">/</span></div></div>
+  <main>
+    <section id="about"><p class="section-eyebrow">// about me</p><h2>Who I Am</h2><div class="about-layout"><div><p class="about-text">Hey! I'm Vaibhav, a student developer who loves building things on the internet. From clean UIs to solid backends, I enjoy every layer of the stack. Right now, I'm interning as a Backend Engineer at HCL Technologies, building Spring Boot REST APIs and microservices, while going deep into system design, scalability, caching, and message queues. On the AI side, I build LLM workflows, RAG pipelines, and agent-based automation with LangChain and LangGraph. I ship full-stack projects end to end, from API design and authentication to deployment, and iterate on them based on real feedback. Always up for a hackathon, an open-source contribution, or a cool collab.</p><div class="stat-grid"><div class="stat"><span class="stat-num">8+</span><span class="stat-label">Projects Shipped</span></div><div class="stat"><span class="stat-num">3+</span><span class="stat-label">Years Building</span></div><div class="stat"><span class="stat-num">5+</span><span class="stat-label">Hackathons</span></div></div></div>
+      <aside class="currently"><p class="section-eyebrow">// currently</p><dl><div><dt>role</dt><dd>Backend Engineering Intern @ HCL Technologies</dd></div><div><dt>focus</dt><dd>system design, microservices &amp; scalability</dd></div><div><dt>building</dt><dd>backend services &amp; AI automation</dd></div><div><dt>exploring</dt><dd>RAG, LangChain, LangGraph</dd></div><div><dt>status</dt><dd>open to collabs &amp; hackathons</dd></div></dl></aside></div>
+    </section>
+    <section id="skills"><p class="section-eyebrow">// skills</p><h2>Technical Skills</h2><div class="tech-groups">      <article class="tech-group"><h3 class="tech-cat">Languages</h3><div class="tech-grid"><span class="tech-chip"><span class="tech-mark" aria-hidden="true">J</span>Java</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">P</span>Python</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">J</span>JavaScript</span></div></article>
+      <article class="tech-group"><h3 class="tech-cat">Backend</h3><div class="tech-grid"><span class="tech-chip"><span class="tech-mark" aria-hidden="true">S B</span>Spring Boot</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">S M</span>Spring MVC</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">S D</span>Spring Data JPA</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">S S</span>Spring Security</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">H</span>Hibernate</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">J A</span>JWT Authentication</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">R</span>RBAC</span></div></article>
+      <article class="tech-group"><h3 class="tech-cat">Scalability &amp; Architecture</h3><div class="tech-grid"><span class="tech-chip"><span class="tech-mark" aria-hidden="true">M</span>Microservices</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">K</span>Kafka</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">C</span>Cache-Aside</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">T</span>TTL/Invalidation</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">D L</span>Distributed Locks</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">I</span>Idempotency</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">P</span>Pagination</span></div></article>
+      <article class="tech-group"><h3 class="tech-cat">Frontend</h3><div class="tech-grid"><span class="tech-chip"><span class="tech-mark" aria-hidden="true">H</span>HTML</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">C</span>CSS</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">J</span>JavaScript</span></div></article>
+      <article class="tech-group"><h3 class="tech-cat">AI / ML</h3><div class="tech-grid"><span class="tech-chip"><span class="tech-mark" aria-hidden="true">M L</span>Machine Learning</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">D L</span>Deep Learning</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">D P</span>Data Preprocessing</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">S</span>Scikit-learn</span></div></article>
+      <article class="tech-group"><h3 class="tech-cat">AI &amp; Automation</h3><div class="tech-grid"><span class="tech-chip"><span class="tech-mark" aria-hidden="true">R</span>RAG</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">L</span>LangChain</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">L</span>LangGraph</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">L W</span>LLM Workflows</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">P E</span>Prompt Engineering</span></div></article>
+      <article class="tech-group"><h3 class="tech-cat">Databases</h3><div class="tech-grid"><span class="tech-chip"><span class="tech-mark" aria-hidden="true">M</span>MySQL</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">M</span>MongoDB</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">R</span>Redis</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">N</span>Neon</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">S</span>Supabase</span></div></article>
+      <article class="tech-group"><h3 class="tech-cat">Tools &amp; Platforms</h3><div class="tech-grid"><span class="tech-chip"><span class="tech-mark" aria-hidden="true">G</span>Git</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">G</span>GitHub</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">D</span>Docker</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">P</span>Postman</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">J N</span>Jupyter Notebook</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">G C</span>Google Colab</span></div></article>
+      <article class="tech-group"><h3 class="tech-cat">Core CS</h3><div class="tech-grid"><span class="tech-chip"><span class="tech-mark" aria-hidden="true">D S</span>Data Structures &amp; Algorithms</span><span class="tech-chip"><span class="tech-mark" aria-hidden="true">O P</span>Object-Oriented Programming</span></div></article></div></section>
+    <section id="ai"><p class="section-eyebrow">// ai automation</p><h2>Building Workflows That Work on Their Own</h2><p class="section-intro">I design AI-powered automation that removes repetitive engineering work: LLM-driven workflows, retrieval-augmented generation (RAG) over custom data, and agent workflows built with LangChain and LangGraph. From prompt optimization to production APIs, I connect models to real systems.</p><div class="automation-grid">
+      <article class="automation-card"><h3>LLM Workflows</h3><p>Prompt design, prompt optimization, and structured outputs for LLM applications.</p></article><article class="automation-card"><h3>RAG (Retrieval-Augmented Generation)</h3><p>Grounding LLM answers in custom documents and data using embeddings and retrieval.</p></article><article class="automation-card"><h3>Agents with LangChain &amp; LangGraph</h3><p>Building stateful, multi-step agent workflows and tool-calling chains.</p></article><article class="automation-card"><h3>Developer Tooling</h3><p>ML-powered tools like the PR Review Time Predictor and CI Risk Predictor.</p></article>
+    </div></section>
+    <section id="projects"><p class="section-eyebrow">// portfolio</p><h2>Featured Projects</h2><div class="project-grid">      <article class="project-card"><span class="project-num">01</span><h3>PR Review Time Predictor</h3><p>End-to-end ML system predicting GitHub PR merge time with LightGBM, trained on 1,500+ Microsoft VSCode PRs. 4-hour median error and 76% accuracy within a 24-hour window; deployed as a REST API and VS Code extension.</p><div class="stack"><span>LightGBM</span><span>REST API</span><span>VS Code</span><span>GitHub</span></div><a href="https://github.com/svaibhav15656-create/PR-PREDICTOR-EXTENSION.git" target="_blank" rel="noopener noreferrer">GitHub Repo &rarr;</a></article>
+      <article class="project-card"><span class="project-num">02</span><h3>CI Risk Predictor (ML-Powered DevOps Extension)</h3><p>VS Code extension predicting CI/CD pipeline failure probability from commit metadata and file change patterns, with real-time risk feedback inside the editor.</p><div class="stack"><span>ML</span><span>VS Code</span><span>CI/CD</span></div><a href="https://github.com/svaibhav15656-create/ci-risk-predictor.git" target="_blank" rel="noopener noreferrer">GitHub Repo &rarr;</a></article>
+      <article class="project-card"><span class="project-num">03</span><h3>AI Decision Copilot</h3><p>AI-powered business analytics system that analyzes datasets, detects missing values, and generates profit-impact recommendations.</p><div class="stack"><span>ML</span><span>Python</span></div><a href="https://github.com/svaibhav15656-create/ai-decision-copilot.git" target="_blank" rel="noopener noreferrer">GitHub Repo &rarr;</a></article>
+      <article class="project-card"><span class="project-num">04</span><h3>Smart Faculty Attendance System</h3><p>Full-stack web app that prevents proxy attendance using JWT authentication, college WiFi IP validation, and real-time face recognition with blink-based liveness detection. Includes role-based REST APIs, an admin dashboard, daily and monthly reports, and audit logs.</p><div class="stack"><span>Java</span><span>JWT</span><span>face-api.js</span><span>REST API</span></div><a href="https://github.com/svaibhav15656-create/smart_attendance_system.git" target="_blank" rel="noopener noreferrer">GitHub Repo &rarr;</a></article>
+      <article class="project-card"><span class="project-num">05</span><h3>Real-Time Environmental Pollution Monitoring System</h3><p>Spring Boot backend managing pollution monitoring stations for PM2.5, PM10, CO, NO, and SO levels, with threshold validation and MODERATE/HIGH severity classification. Layered architecture with Hibernate ORM.</p><div class="stack"><span>Spring Boot</span><span>Hibernate</span><span>REST API</span></div></article>
+      <article class="project-card"><span class="project-num">06</span><h3>Primetrade App</h3><p>Full-stack task management app built with JavaScript, CSS, and SQL.</p><div class="stack"><span>JS</span><span>CSS</span><span>SQL</span></div><a href="https://github.com/svaibhav15656-create/primetrade-app.git" target="_blank" rel="noopener noreferrer">GitHub Repo &rarr;</a></article></div></section>
+    <section id="experience"><p class="section-eyebrow">// journey</p><h2>Experience &amp; Education</h2><div class="timeline">
+      <article class="timeline-item"><div class="timeline-date">Sep 2026 &ndash; Present <span class="current-badge">Current</span></div><div class="timeline-body"><h3>Backend Engineering Intern</h3><span class="timeline-org">HCL Technologies &middot; Vijayawada, Andhra Pradesh</span><ul><li>Collaborating with senior engineers to debug production issues, write unit tests, and follow code review and Git workflows.</li><li>Contributing to microservices-based modules, gaining exposure to authentication, logging, and API documentation practices.</li><li>Building LLM-powered agent workflows using LangChain and LangGraph.</li></ul></div></article>
+      <article class="timeline-item"><div class="timeline-date">Mar 2026 &ndash; Apr 2026</div><div class="timeline-body"><h3>AI &amp; Data Analytics Intern</h3><span class="timeline-org">XylofyAI</span><ul><li>Designed and refined Python-based data processing pipelines to extract patterns from structured datasets.</li><li>Assisted in generating AI-driven analytical insights to support data-informed decision-making.</li></ul><div class="stack"><span>Python</span><span>Machine Learning</span><span>Data Processing</span></div></div></article>
+      <article class="timeline-item"><div class="timeline-date">Nov 2025 &ndash; Dec 2025</div><div class="timeline-body"><h3>AI &amp; Prompt Engineering Intern</h3><span class="timeline-org">VaultofCode</span><ul><li>Developed AI-powered Python applications using structured prompt engineering workflows.</li><li>Built automation-oriented programs including a Caesar cipher tool and a virtual pet simulator.</li></ul><div class="stack"><span>Python</span><span>Prompt Engineering</span><span>LLM Workflows</span></div></div></article>
+      <article class="timeline-item"><div class="timeline-date">2024 &ndash; 2028 (Expected)</div><div class="timeline-body"><h3>B.Tech in Computer Science and Engineering</h3><span class="timeline-org">SRM Institute of Science and Technology, Ramapuram</span><p>CGPA: 9.2</p></div></article>
+    </div></section>
+    <section id="contact"><p class="section-eyebrow">// say hello</p><h2>Let's Work Together</h2><p class="contact-text">Open to internships, backend and AI roles, hackathons, and collabs.</p><a class="email-link" href="mailto:s.vaibhav15656@gmail.com">s.vaibhav15656@gmail.com</a><div class="social-row"><a href="https://github.com/svaibhav15656-create" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.linkedin.com/in/s-vaibhav07/" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="mailto:s.vaibhav15656@gmail.com">Email</a><a href="https://www.instagram.com/__vaibhav.17/?hl=en" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://leetcode.com/u/vaibhav_vvv/" target="_blank" rel="noopener noreferrer">LeetCode</a></div></section>
+  </main>
+  <div id="visitToast" class="visit-toast" role="status" aria-live="polite" aria-atomic="true" hidden><div><p class="visit-toast-title"><span aria-hidden="true">&#128065;</span> You are visitor <strong id="visitNumber"></strong></p><p>Thanks for stopping by.</p></div><button id="visitClose" class="visitor-close" type="button" aria-label="Close visit message">&times;</button></div>
+  <footer><p>Built with &#129293; by Vaibhav.</p><p id="visitTotal" class="visit-total" hidden aria-label="Total visits"></p></footer>
+  <script src="script.js" defer></script>
 </body>
 </html>
