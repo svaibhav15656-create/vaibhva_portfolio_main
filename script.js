@@ -640,64 +640,6 @@ sections.forEach(section => {
   });
 })();
 
-// Cursor-tracking hero head — DEBUG VERSION with console logs
-(function () {
-  const video = document.getElementById('cursorHeadVideo');
-  if (!video) { console.log('❌ video element not found'); return; }
-
-  let duration = 0;
-  let targetRatio = 0.5;
-  let currentRatio = 0.5;
-  let primed = false;
-
-  function primeVideo() {
-    if (primed) return;
-    primed = true;
-    console.log('▶️ priming video, duration =', video.duration);
-    const p = video.play();
-    if (p && p.then) {
-      p.then(() => {
-        console.log('✅ play succeeded, pausing now');
-        video.pause();
-      }).catch(err => {
-        console.log('⚠️ play() blocked:', err.message);
-      });
-    }
-  }
-
-  video.addEventListener('loadedmetadata', () => {
-    duration = video.duration;
-    console.log('📼 loadedmetadata fired, duration =', duration);
-    primeVideo();
-  });
-
-  video.addEventListener('error', () => {
-    console.log('❌ video error:', video.error);
-  });
-
-  if (video.readyState >= 1) {
-    duration = video.duration;
-    console.log('📼 already ready, duration =', duration);
-    primeVideo();
-  }
-
-  window.addEventListener('mousemove', (e) => {
-    targetRatio = Math.min(1, Math.max(0, e.clientX / window.innerWidth));
-  });
-
-  function tick() {
-    if (duration) {
-      currentRatio += (targetRatio - currentRatio) * 0.08;
-      const t = currentRatio * duration;
-      if (Math.abs(video.currentTime - t) > 0.01) {
-        video.currentTime = t;
-      }
-    }
-    requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-})();
-
 // 11. Marquee strip — pause on hover is handled purely via CSS (:hover),
 // no JS needed. Included here only as a placeholder in case a manual
 // pause/play toggle is wanted later.
