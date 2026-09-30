@@ -364,7 +364,7 @@ a { color:inherit; text-decoration:none; }
   position:relative;
   transition:transform 0.15s ease-out;
 }
-.photo-inner img {
+.photo-inner img, .photo-inner video {
   width:100%;
   height:100%;
   object-fit:cover;

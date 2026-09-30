@@ -1,4 +1,4 @@
-// Visitor counter popup (real incrementing count — free, no signup)
+﻿// Visitor counter popup (real incrementing count — free, no signup)
 (function () {
   const popup = document.getElementById('visitorPopup');
   const closeBtn = document.getElementById('visitorClose');
@@ -37,6 +37,7 @@
     if (e.target === popup) hidePopup();
   });
 })();
+
 // Background music toggle
 const bgMusic = document.getElementById("bgMusic");
 const musicToggle = document.getElementById("musicToggle");
@@ -45,26 +46,14 @@ const musicIconOff = document.getElementById("musicIconOff");
 
 if (bgMusic && musicToggle) {
     bgMusic.volume = 0.5;
-    let userPaused = false; // true only when the user explicitly hits pause
+    let userPaused = false;
 
-    // Reflect "not audible yet" in the icon right away
     musicIconOn.style.display = "none";
     musicIconOff.style.display = "block";
 
-    // 1) Autoplay muted the instant the page loads.
-    //    Every browser allows muted autoplay, so this always succeeds —
-    //    the track starts right on schedule, just silently.
     bgMusic.muted = true;
-    bgMusic.play().catch(() => {
-        // Even muted autoplay can rarely be blocked (e.g. some in-app browsers).
-        // If so, playback will simply start on the first interaction below.
-    });
+    bgMusic.play().catch(() => {});
 
-    // 2) The moment the user does something real — click, tap, or key press —
-    //    unmute automatically. Audio is already playing in sync, so sound
-    //    kicks in instantly with no restart/lag. (Mouse movement and scroll
-    //    don't count — browsers don't treat those as genuine user gestures,
-    //    so unmuting there would silently fail.)
     const unmuteOnInteraction = async () => {
         if (userPaused) return;
         bgMusic.muted = false;
@@ -85,7 +74,6 @@ if (bgMusic && musicToggle) {
     document.addEventListener("keydown", unmuteOnInteraction);
     document.addEventListener("touchstart", unmuteOnInteraction);
 
-    // Manual toggle button — unmute/play if muted or paused, otherwise pause
     musicToggle.addEventListener("click", async () => {
         hideClickHintFn();
         if (bgMusic.muted || bgMusic.paused) {
@@ -108,6 +96,7 @@ if (bgMusic && musicToggle) {
         }
     });
 }
+
 // Projects coverflow carousel
 const projectTrack = document.getElementById('projectTrack');
 const projPrev = document.getElementById('projPrev');
@@ -119,7 +108,6 @@ if (projectTrack) {
   const total = cards.length;
   let activeIndex = 0;
 
-  // Build dot indicators
   cards.forEach((_, i) => {
     const dot = document.createElement('span');
     dot.className = 'dot';
@@ -133,7 +121,6 @@ if (projectTrack) {
 
   function render() {
     cards.forEach((card, i) => {
-      // shortest circular distance from active index
       let diff = i - activeIndex;
       if (diff > total / 2) diff -= total;
       if (diff < -total / 2) diff += total;
@@ -167,9 +154,7 @@ if (projectTrack) {
   render();
 }
 
-// Floating "click anywhere" hint — drifts slowly in a random direction
-// and bounces off the edges of the screen, like a DVD logo. Disappears
-// as soon as the user clicks/taps/presses a key anywhere.
+// Floating "click anywhere" hint
 const clickHint = document.getElementById('clickHint');
 let hideClickHintFn = () => {};
 
@@ -178,9 +163,8 @@ if (clickHint) {
   let x = Math.random() * (window.innerWidth - 220);
   let y = Math.random() * (window.innerHeight - 60);
 
-  // Random direction, slow constant speed
   const angle = Math.random() * Math.PI * 2;
-  const speed = 0.35; // px per frame — slow drift
+  const speed = 0.35;
   let vx = Math.cos(angle) * speed;
   let vy = Math.sin(angle) * speed;
 
@@ -215,17 +199,14 @@ if (clickHint) {
   };
 }
 
-// Watery ripple effect — expanding, fading rings that trail the cursor.
-// Renders on a full-viewport canvas sitting behind all real content, so it
-// only shows through empty space (gaps between sections/cards), since
-// anything opaque on top naturally hides it.
+// Watery ripple effect
 const waterCanvas = document.getElementById('waterCanvas');
 
 if (waterCanvas) {
   const ctx = waterCanvas.getContext('2d');
   let ripples = [];
   let lastRippleTime = 0;
-  const rippleInterval = 90; // ms between new ripples while moving
+  const rippleInterval = 90;
   const accentColor = getComputedStyle(document.documentElement)
     .getPropertyValue('--accent').trim() || '#e0a052';
 
@@ -277,7 +258,7 @@ if (waterCanvas) {
   drawRipples();
 }
 
-// Glowing cursor trail that eases toward the mouse position
+// Glowing cursor trail
 const cursorGlow = document.getElementById('cursorGlow');
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
@@ -296,7 +277,6 @@ if (cursorGlow) {
   });
 
   function animateGlow() {
-    // ease factor: lower = more trailing lag, higher = snappier
     const ease = 0.12;
     glowX += (mouseX - glowX) * ease;
     glowY += (mouseY - glowY) * ease;
@@ -306,7 +286,7 @@ if (cursorGlow) {
   animateGlow();
 }
 
-// Typewriter effect for hero heading — starts only after popup closes
+// Typewriter effect for hero heading
 const typewriterEl = document.getElementById('typewriter');
 
 function startTypewriter() {
@@ -315,7 +295,7 @@ function startTypewriter() {
   const accentPart = "Vaibhav";
   const fullText = plainPart + accentPart;
   let i = 0;
-  const speed = 70; // ms per character
+  const speed = 70;
 
   function typeChar() {
     if (i <= fullText.length) {
@@ -333,7 +313,8 @@ function startTypewriter() {
   }
   typeChar();
 }
-// Hover tilt / parallax effect on hero photo (Lando Norris style)
+
+// Hover tilt / parallax effect on hero photo
 const wrap = document.getElementById('photoWrap');
 const card = document.getElementById('photoCard');
 const inner = document.getElementById('photoInner');
@@ -379,9 +360,6 @@ sections.forEach(section => {
   section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
   observer.observe(section);
 });
-/* ============================================
-   NEW ADDITIONS — scroll effects & interactions
-   ============================================ */
 
 // 1. Scroll progress bar
 (function () {
@@ -395,7 +373,7 @@ sections.forEach(section => {
   });
 })();
 
-// 2. Count-up animation for stat numbers (8+, 2+, 100%)
+// 2. Count-up animation for stat numbers
 (function () {
   const statNums = document.querySelectorAll('.stat-num');
   if (!statNums.length) return;
@@ -516,7 +494,7 @@ sections.forEach(section => {
   applyMagnetic('.carousel-arrow', 0.35);
 })();
 
-// 6. Heading text reveal — word by word as section headings enter view
+// 6. Heading text reveal
 (function () {
   const headings = document.querySelectorAll('main section h2');
   if (!headings.length) return;
@@ -545,7 +523,7 @@ sections.forEach(section => {
   headings.forEach(h => headingObserver.observe(h));
 })();
 
-// 7. Subtle film-grain overlay across the whole page
+// 7. Subtle film-grain overlay
 (function () {
   const grain = document.createElement('div');
   grain.className = 'grain-overlay';
@@ -561,10 +539,6 @@ sections.forEach(section => {
   let scrubCooldown = false;
 
   carousel.addEventListener('wheel', (e) => {
-    // Only hijack wheel when scrolling mostly horizontally-intended or
-    // holding shift; otherwise let the page scroll normally.
-    // Here we use vertical wheel delta while hovered on the carousel
-    // to move the coverflow, with a cooldown so it steps one card at a time.
     if (scrubCooldown) return;
     e.preventDefault();
 
@@ -579,18 +553,12 @@ sections.forEach(section => {
   }, { passive: false });
 })();
 
-/* ============================================
-   NEW ADDITIONS ROUND 2 — scramble, konami, marquee
-   ============================================ */
-
 // 9. Text scramble effect on hero role text
 (function () {
   const roleEl = document.querySelector('.role');
   if (!roleEl) return;
 
   const finalHTML = roleEl.innerHTML;
-  // Extract plain text version (strip the <span class="dot">·</span> markup for scrambling,
-  // but keep final HTML to restore exactly at the end)
   const finalText = roleEl.textContent;
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!<>-_\\/[]{}—=+*^?#';
 
@@ -618,12 +586,11 @@ sections.forEach(section => {
 
       if (frame > totalFrames) {
         clearInterval(scrambleInterval);
-        roleEl.innerHTML = finalHTML; // restore exact original markup (with the styled dot)
+        roleEl.innerHTML = finalHTML;
       }
     }, 35);
   }
 
-  // Trigger once hero is visible (page load area), only once
   const roleObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -671,6 +638,64 @@ sections.forEach(section => {
       position = key === konamiSequence[0] ? 1 : 0;
     }
   });
+})();
+
+// Cursor-tracking hero head — DEBUG VERSION with console logs
+(function () {
+  const video = document.getElementById('cursorHeadVideo');
+  if (!video) { console.log('❌ video element not found'); return; }
+
+  let duration = 0;
+  let targetRatio = 0.5;
+  let currentRatio = 0.5;
+  let primed = false;
+
+  function primeVideo() {
+    if (primed) return;
+    primed = true;
+    console.log('▶️ priming video, duration =', video.duration);
+    const p = video.play();
+    if (p && p.then) {
+      p.then(() => {
+        console.log('✅ play succeeded, pausing now');
+        video.pause();
+      }).catch(err => {
+        console.log('⚠️ play() blocked:', err.message);
+      });
+    }
+  }
+
+  video.addEventListener('loadedmetadata', () => {
+    duration = video.duration;
+    console.log('📼 loadedmetadata fired, duration =', duration);
+    primeVideo();
+  });
+
+  video.addEventListener('error', () => {
+    console.log('❌ video error:', video.error);
+  });
+
+  if (video.readyState >= 1) {
+    duration = video.duration;
+    console.log('📼 already ready, duration =', duration);
+    primeVideo();
+  }
+
+  window.addEventListener('mousemove', (e) => {
+    targetRatio = Math.min(1, Math.max(0, e.clientX / window.innerWidth));
+  });
+
+  function tick() {
+    if (duration) {
+      currentRatio += (targetRatio - currentRatio) * 0.08;
+      const t = currentRatio * duration;
+      if (Math.abs(video.currentTime - t) > 0.01) {
+        video.currentTime = t;
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
 })();
 
 // 11. Marquee strip — pause on hover is handled purely via CSS (:hover),
