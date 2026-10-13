@@ -33,42 +33,37 @@
 
   const toast = document.getElementById('visitToast');
   const popupCount = document.getElementById('visitNumber');
-  const totalCount = document.getElementById('visitTotal');
   let toastTimer;
   let popupAnimationFrame;
+  let popupShownAt = 0;
   function hideToast() {
     toast.hidden = true;
     document.body.classList.remove('visit-modal-open');
     window.clearTimeout(toastTimer);
   }
-  function animateCount(target) {
-    totalCount.hidden = false; totalCount.setAttribute('aria-label', `${target.toLocaleString()} total visits`);
-    const duration = reducedMotion ? 0 : 700; const started = performance.now();
-    function frame(now) {
-      const ratio = duration ? Math.min((now - started) / duration, 1) : 1;
-      const value = Math.round(target * ratio);
-      totalCount.textContent = `${String.fromCodePoint(128065)} ${value.toLocaleString()} total visits`;
-      if (ratio < 1) requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-  }
   function animatePopupCount(count) {
     window.cancelAnimationFrame(popupAnimationFrame);
-    const duration = reducedMotion ? 0 : 1200;
+    const startValue = Number(popupCount.textContent.replace(/[^\d]/g, '')) || 0;
+    const duration = reducedMotion ? 0 : (startValue === 0 ? 1400 : 350);
     const started = performance.now();
     function animatePopup(now) {
       const progress = duration ? Math.min((now - started) / duration, 1) : 1;
-      const value = Math.floor(count * progress);
+      const value = Math.floor(startValue + (count - startValue) * progress);
       popupCount.textContent = `#${value.toLocaleString()}`;
       if (progress < 1) popupAnimationFrame = requestAnimationFrame(animatePopup);
+      else if (toast && !toast.hidden) {
+        window.clearTimeout(toastTimer);
+        const remaining = Math.max(500, 2000 - (performance.now() - popupShownAt));
+        toastTimer = window.setTimeout(hideToast, remaining);
+      }
     }
     popupAnimationFrame = requestAnimationFrame(animatePopup);
   }
   function showToast(count) {
     animatePopupCount(count);
     toast.hidden = false;
+    popupShownAt = performance.now();
     document.body.classList.add('visit-modal-open');
-    toastTimer = window.setTimeout(hideToast, 2000);
   }
   showToast(126);
   async function loadVisits() {
@@ -77,12 +72,18 @@
       if (!response.ok) throw new Error('Visit count unavailable');
       const data = await response.json();
       if (!Number.isSafeInteger(data.count) || data.count < 0) throw new Error('Invalid visit count');
-      animateCount(data.count); animatePopupCount(data.count);
+      animatePopupCount(data.count);
     } catch (_) {
-      // Keep the welcome message available even if the hosted counter API is
-      // temporarily unreachable; the persistent counter is seeded at 126.
-      animateCount(126);
-      animatePopupCount(126);
+      // Preserve a per-browser count when the hosted counter is unavailable.
+      let fallbackCount = 126;
+      try {
+        const previousCount = Number(localStorage.getItem('portfolio_visit_count'));
+        fallbackCount = Number.isSafeInteger(previousCount) && previousCount >= 126
+          ? previousCount + 1
+          : 126;
+        localStorage.setItem('portfolio_visit_count', String(fallbackCount));
+      } catch (_) { /* Keep the initial count if browser storage is blocked. */ }
+      animatePopupCount(fallbackCount);
     }
   }
   loadVisits();
