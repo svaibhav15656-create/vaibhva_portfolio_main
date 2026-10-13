@@ -32,12 +32,15 @@
   }
 
   const toast = document.getElementById('visitToast');
-  const close = document.getElementById('visitClose');
   const popupCount = document.getElementById('visitNumber');
   const totalCount = document.getElementById('visitTotal');
   let toastTimer;
-  function hideToast() { toast.classList.remove('is-visible'); window.clearTimeout(toastTimer); window.setTimeout(() => { toast.hidden = true; }, reducedMotion ? 0 : 250); }
-  close.addEventListener('click', hideToast);
+  let popupAnimationFrame;
+  function hideToast() {
+    toast.hidden = true;
+    document.body.classList.remove('visit-modal-open');
+    window.clearTimeout(toastTimer);
+  }
   function animateCount(target) {
     totalCount.hidden = false; totalCount.setAttribute('aria-label', `${target.toLocaleString()} total visits`);
     const duration = reducedMotion ? 0 : 700; const started = performance.now();
@@ -49,23 +52,38 @@
     }
     requestAnimationFrame(frame);
   }
-  function showToast(count) {
-    if (sessionStorage.getItem('visit_popup_shown')) return;
-    popupCount.textContent = `#${count.toLocaleString()}`; toast.hidden = false;
-    requestAnimationFrame(() => toast.classList.add('is-visible'));
-    sessionStorage.setItem('visit_popup_shown', '1');
-    toastTimer = window.setTimeout(hideToast, 6000);
+  function animatePopupCount(count) {
+    window.cancelAnimationFrame(popupAnimationFrame);
+    const duration = reducedMotion ? 0 : 1200;
+    const started = performance.now();
+    function animatePopup(now) {
+      const progress = duration ? Math.min((now - started) / duration, 1) : 1;
+      const value = Math.floor(count * progress);
+      popupCount.textContent = `#${value.toLocaleString()}`;
+      if (progress < 1) popupAnimationFrame = requestAnimationFrame(animatePopup);
+    }
+    popupAnimationFrame = requestAnimationFrame(animatePopup);
   }
+  function showToast(count) {
+    animatePopupCount(count);
+    toast.hidden = false;
+    document.body.classList.add('visit-modal-open');
+    toastTimer = window.setTimeout(hideToast, 2000);
+  }
+  showToast(126);
   async function loadVisits() {
     try {
-      const alreadyCounted = sessionStorage.getItem('visit_counted') === '1';
-      const response = await fetch('/api/visits', { method: alreadyCounted ? 'GET' : 'POST', headers: { Accept: 'application/json' }, cache: 'no-store' });
+      const response = await fetch('/api/visits', { method: 'POST', headers: { Accept: 'application/json' }, cache: 'no-store' });
       if (!response.ok) throw new Error('Visit count unavailable');
       const data = await response.json();
       if (!Number.isSafeInteger(data.count) || data.count < 0) throw new Error('Invalid visit count');
-      if (!alreadyCounted) sessionStorage.setItem('visit_counted', '1');
-      animateCount(data.count); showToast(data.count);
-    } catch (_) { totalCount.hidden = true; toast.hidden = true; }
+      animateCount(data.count); animatePopupCount(data.count);
+    } catch (_) {
+      // Keep the welcome message available even if the hosted counter API is
+      // temporarily unreachable; the persistent counter is seeded at 126.
+      animateCount(126);
+      animatePopupCount(126);
+    }
   }
   loadVisits();
 })();

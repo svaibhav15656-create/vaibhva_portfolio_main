@@ -11,16 +11,60 @@ module.exports = async function handler(req, res) {
   if (!url || !token) return res.status(500).json({ error: 'Visit counter unavailable' });
 
   try {
-    const command = req.method === 'POST' ? 'incr' : 'get';
-    const response = await fetch(`${url.replace(/\/$/, '')}/${command}/portfolio%3Avisits`, {
+    const key = 'portfolio%3Avisits';
+    // Seed a new counter at the requested starting total. SET ... NX is atomic,
+    // so simultaneous first visits cannot overwrite an established count.
+    const seedResponse = await fetch(`${url.replace(/\/$/, '')}/set/${key}/126/NX`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' }
     });
-    if (!response.ok) throw new Error('Redis request failed');
-    const payload = await response.json();
-    if (payload.error) throw new Error('Redis command failed');
-    const count = payload.result === null ? 0 : Number(payload.result);
-    if (!Number.isSafeInteger(count) || count < 0) throw new Error('Invalid Redis count');
+    if (!seedResponse.ok) throw new Error('Redis request failed');
+    const seeded = await seedResponse.json();
+    if (seeded.error) throw new Error('Redis command failed');
+
+    let count;
+    if (req.method === 'POST' && seeded.result !== 'OK') {
+      const response = await fetch(`${url.replace(/\/$/, '')}/incr/${key}`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' }
+      });
+      if (!response.ok) throw new Error('Redis request failed');
+      const payload = await response.json();
+      if (payload.error) throw new Error('Redis command failed');
+      count = Number(payload.result);
+      if (count < 126) {
+        const resetResponse = await fetch(`${url.replace(/\/$/, '')}/set/${key}/126`, {
+          method: 'GET',
+          headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' }
+        });
+        if (!resetResponse.ok) throw new Error('Redis request failed');
+        const reset = await resetResponse.json();
+        if (reset.error) throw new Error('Redis command failed');
+        count = 126;
+      }
+    } else if (seeded.result === 'OK') {
+      count = 126;
+    } else {
+      const response = await fetch(`${url.replace(/\/$/, '')}/get/${key}`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' }
+      });
+      if (!response.ok) throw new Error('Redis request failed');
+      const payload = await response.json();
+      if (payload.error) throw new Error('Redis command failed');
+      count = Number(payload.result);
+      if (count < 126) {
+        const resetResponse = await fetch(`${url.replace(/\/$/, '')}/set/${key}/126`, {
+          method: 'GET',
+          headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' }
+        });
+        if (!resetResponse.ok) throw new Error('Redis request failed');
+        const reset = await resetResponse.json();
+        if (reset.error) throw new Error('Redis command failed');
+        count = 126;
+      }
+    }
+    if (!Number.isSafeInteger(count) || count < 126) throw new Error('Invalid Redis count');
     return res.status(200).json({ count });
   } catch (_) {
     return res.status(500).json({ error: 'Visit counter unavailable' });
