@@ -63,7 +63,8 @@ h1{font-size:clamp(2.3rem,5vw,4.1rem);line-height:1.1;font-weight:800;letter-spa
 .bdrag.grab{cursor:grabbing}
 .strap{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible}
 .strap path{stroke:#2c2c2c;fill:none}
-.hint{position:absolute;left:0;right:0;bottom:-38px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:#555}
+.hint{position:absolute;left:0;right:0;bottom:-38px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:#8a8a8a;background:linear-gradient(110deg,#6e6e6e 35%,#ffffff 50%,#6e6e6e 65%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:hintshine 2.6s linear infinite}
+@keyframes hintshine{from{background-position:150% 0}to{background-position:-150% 0}}
 .about .wrap{position:relative;z-index:2}
 .stats{display:flex;gap:3.2rem;margin-top:2.2rem;flex-wrap:wrap}
 .stats b{display:block;font-size:2rem;font-weight:700;color:var(--accent);line-height:1;margin-bottom:6px}
