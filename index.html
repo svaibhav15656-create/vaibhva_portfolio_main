@@ -163,6 +163,33 @@ footer{text-align:center;color:#666;font-size:.72rem;padding:2rem 0 3rem}
   75%{transform:scale(1.02) translate(-.5px,-1px)}
   100%{transform:scale(1.02) translate(.5px,1px)}
 }
+
+/* showreel popup + lightbox */
+body.modal{overflow:hidden}
+.reelpop{position:fixed;right:22px;bottom:22px;z-index:60;width:min(310px,calc(100vw - 44px));display:flex;align-items:center;gap:14px;padding:12px 40px 12px 12px;background:rgba(23,23,23,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.14);border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.6);cursor:pointer;opacity:0;transform:translateY(24px) scale(.96);pointer-events:none;transition:opacity .5s,transform .5s cubic-bezier(.2,.9,.3,1.2),border-color .2s}
+.reelpop.show{opacity:1;transform:none;pointer-events:auto}
+.reelpop:hover{border-color:rgba(242,107,29,.7)}
+.reelpop .rt{position:relative;flex:none;width:76px;height:56px;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#2a1d14,#0f0f0f)}
+.reelpop .rt img{width:100%;height:100%;object-fit:cover;display:block}
+.reelpop .rt i{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.28)}
+.reelpop .rt i b{width:28px;height:28px;border-radius:50%;background:var(--accent);display:grid;place-items:center;animation:rpulse 2s ease-out infinite}
+.reelpop .rt svg{width:12px;height:12px;fill:#fff;margin-left:2px}
+@keyframes rpulse{0%{box-shadow:0 0 0 0 rgba(242,107,29,.6)}100%{box-shadow:0 0 0 12px rgba(242,107,29,0)}}
+.reelpop small{display:block;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.reelpop strong{display:block;font-size:.88rem;font-weight:700;line-height:1.3}
+.reelpop em{display:block;font-style:normal;font-size:.7rem;color:var(--muted);margin-top:2px}
+.reelpop .x{position:absolute;top:8px;right:8px;width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:#888;font-size:.8rem;cursor:pointer;transition:color .2s,background .2s}
+.reelpop .x:hover{color:#fff;background:rgba(255,255,255,.1)}
+.vmodal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:4vw;background:rgba(0,0,0,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.vmodal.open{display:flex;animation:vfade .3s ease}
+@keyframes vfade{from{opacity:0}to{opacity:1}}
+.vbox{position:relative;width:min(960px,100%);aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#000;border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 90px rgba(0,0,0,.7)}
+.vbox iframe,.vbox video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.vbox .soon{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;text-align:center;padding:2rem;background:linear-gradient(135deg,#1d1d1d,#0c0c0c)}
+.vbox .soon h3{font-size:clamp(1.3rem,3vw,2rem);font-weight:800}
+.vbox .soon p{color:var(--muted);font-size:.9rem;max-width:420px}
+.vclose{position:absolute;top:18px;right:22px;z-index:2;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(20,20,20,.7);color:#fff;font-size:1.1rem;cursor:pointer;transition:background .2s}
+.vclose:hover{background:rgba(255,255,255,.18)}
 </style>
 </head>
 <body>
@@ -287,7 +314,7 @@ footer{text-align:center;color:#666;font-size:.72rem;padding:2rem 0 3rem}
     <a href="https://www.linkedin.com/in/s-vaibhav07/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg></a>
   </div>
 </div></section>
-<footer>Built with 🤍 by Vaibhav</footer>
+<footer>© 2026 Vaibhav S. Designed &amp; built by me.</footer>
 
 <script>
 const SKILLS={
@@ -312,6 +339,46 @@ const EXP=[
 {d:'MAR 2026',ch:'INTERNSHIP',t:'AI & Data Analytics Intern',s:'XylofyAI',g:['Python Data Pipelines','Data Preprocessing','Analytics','Model Evaluation'],te:['PYTHON','PANDAS','SCIKIT-LEARN']},
 {d:'NOV 2025',ch:'INTERNSHIP',t:'AI & Prompt Engineering Intern',s:'VaultofCode',g:['Prompt Design','Prompt Optimisation','Structured Outputs','LLM Apps'],te:['LLM','PROMPTING','PYTHON']}];
 xgrid.innerHTML=EXP.map((e,i)=>`<div class="xc rv" style="transition-delay:${i*.1}s"><div class="xt"><span>${e.d}</span><span class="chip">${e.ch}</span></div><h3>${e.t}</h3><div class="sub">${e.s}</div><h4>SKILLS GAINED</h4><ul>${e.g.map(x=>`<li>${x}</li>`).join('')}</ul><h4 class="tt">TECHNOLOGIES</h4><div class="tags">${e.te.map(x=>`<span class="tag">${x}</span>`).join('')}</div></div>`).join('');
+
+/* showreel popup: paste your YouTube link (or an .mp4 path) below. Leave empty to show "coming soon". */
+const SHOWREEL_URL='brag.mp4';          /* video file next to index.html (or a YouTube link). Empty = no video */
+const REEL_THUMB='data:image/jpeg;base64,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';
+(()=>{
+const yt=(SHOWREEL_URL.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/)||[])[1];
+const mp4=/\.(mp4|webm|ogg)(\?.*)?$/i.test(SHOWREEL_URL);
+const has=!!(yt||mp4);
+const play='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+const pop=document.createElement('div');pop.className='reelpop';pop.setAttribute('role','button');pop.tabIndex=0;
+pop.innerHTML='<div class="rt">'+(yt?'<img alt="" src="https://img.youtube.com/vi/'+yt+'/hqdefault.jpg">':'<img alt="" src="'+REEL_THUMB+'">')+(has?'<i><b>'+play+'</b></i>':'')+'</div>'+
+  '<div><small>Coming soon</small><strong>Root_Cause</strong>'+(has?'<em>Tap to watch the teaser</em>':'<em>Something new is on the way</em>')+'</div>'+
+  '<button class="x" aria-label="Dismiss">✕</button>';
+const modal=document.createElement('div');modal.className='vmodal';
+modal.innerHTML='<button class="vclose" aria-label="Close">✕</button><div class="vbox"></div>';
+document.body.append(pop,modal);
+const vbox=modal.querySelector('.vbox');
+function open(){
+  vbox.innerHTML=yt?'<iframe src="https://www.youtube-nocookie.com/embed/'+yt+'?autoplay=1&rel=0" title="Showreel" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>'
+    :mp4?'<video controls autoplay playsinline preload="auto"><source src="'+SHOWREEL_URL+'" type="video/mp4"><source src="'+SHOWREEL_URL.replace(/\.\w+(\?.*)?$/,'.webm')+'" type="video/webm"></video>'
+    :'<div class="soon"><h3>Showreel dropping soon</h3><p>Grab a coffee in the meantime. My projects are on GitHub.</p><a class="btn pri" href="https://github.com/svaibhav15656-create" target="_blank" rel="noopener">Browse my GitHub ↗</a></div>';
+  modal.classList.add('open');document.body.classList.add('modal');
+  const v=vbox.querySelector('video');
+  if(v){v.querySelector('source:last-child').addEventListener('error',()=>{vbox.innerHTML='<div class="soon"><h3>Video could not load</h3><p>Make sure brag.mp4 is in the same folder as index.html.</p></div>'});
+    const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{v.muted=true;v.play().catch(()=>{})})}
+}
+function close(){modal.classList.remove('open');document.body.classList.remove('modal');vbox.innerHTML=''}  /* clearing stops the video */
+if(has){pop.addEventListener('click',open);
+pop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}})}
+else{pop.style.cursor='default';pop.removeAttribute('role');pop.removeAttribute('tabindex')}
+pop.querySelector('.x').addEventListener('click',e=>{e.stopPropagation();pop.classList.remove('show');try{sessionStorage.setItem('reelDismissed','1')}catch(_){}});
+modal.querySelector('.vclose').addEventListener('click',close);
+modal.addEventListener('click',e=>{if(e.target===modal)close()});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))close()});
+let gone=false;try{gone=sessionStorage.getItem('reelDismissed')==='1'}catch(_){}
+let scrolled=false;
+if(!gone)setTimeout(()=>{if(!scrolled)pop.classList.add('show')},2500);
+/* hide the popup as soon as the visitor scrolls */
+addEventListener('scroll',()=>{if(scrolled||scrollY<20)return;scrolled=true;pop.classList.remove('show')},{passive:true});
+})();
 
 /* typing */
 const words=['Full Stack Dev','AI Automation Dev'];let wi=0,ci=0,del=false;const el=document.getElementById('typed');
@@ -427,7 +494,7 @@ function tick(){
 }
 const go=()=>{if(!raf)raf=requestAnimationFrame(tick)};
 addEventListener('wheel',e=>{
-  if(e.ctrlKey||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
+  if(document.body.classList.contains('modal')||e.ctrlKey||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
   e.preventDefault();
   const d=e.deltaMode===1?e.deltaY*32:e.deltaMode===2?e.deltaY*innerHeight:e.deltaY;
   if(!raf){target=current=scrollY}
