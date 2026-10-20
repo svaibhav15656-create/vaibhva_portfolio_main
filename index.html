@@ -11,7 +11,7 @@
 <style>
 :root{--bg:#0C0C0C;--bg2:#111111;--card:#171717;--card2:#1d1d1d;--line:rgba(255,255,255,.09);--text:#EDEDED;--muted:#9C9C9C;--accent:#F26B1D}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}
 body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;line-height:1.6;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 section{scroll-margin-top:70px}
@@ -46,8 +46,8 @@ h1{font-size:clamp(2.3rem,5vw,4.1rem);line-height:1.1;font-weight:800;letter-spa
 /* monitor */
 .mon-wrap{display:flex;justify-content:center}
 .mon{position:relative;width:min(100%,520px);background:#1a1a1a;border:1px solid #2a2a2a;border-radius:30px;padding:14px 14px 22px;box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 0 6px #0f0f0f,0 0 60px rgba(242,107,29,.08);animation:float 6s ease-in-out infinite}
-.mon .bar{display:flex;align-items:center;gap:8px;font-size:.55rem;letter-spacing:.2em;color:#777;padding:0 6px 10px;font-family:'JetBrains Mono',monospace}
-.mon .bar b{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.mon .bar{display:flex;align-items:center;gap:10px;font-size:.8rem;font-weight:500;letter-spacing:.16em;color:#f2f2f2;text-shadow:0 0 10px rgba(255,255,255,.25);padding:0 6px 12px;font-family:'JetBrains Mono',monospace}
+.mon .bar b{width:8px;height:8px;border-radius:50%;background:var(--accent)}
 .screen{background:#0C0C0C;border-radius:18px;aspect-ratio:4/3;overflow:hidden;box-shadow:inset 0 0 0 1px #262626}
 .screen img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block}
 .mon:before,.mon:after{content:"";position:absolute;bottom:-26px;width:42px;height:28px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:0 0 12px 12px;z-index:-1}
@@ -139,7 +139,7 @@ footer{text-align:center;color:#666;font-size:.72rem;padding:2rem 0 3rem}
 .rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.25,.1,.25,1),transform .8s cubic-bezier(.25,.1,.25,1)}
 .rv.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){*{animation:none!important}.rv{opacity:1;transform:none}}
-.screen{cursor:pointer}.screen svg{width:100%;height:100%;display:block}
+.screen{cursor:default}.screen svg{width:100%;height:100%;display:block}
 .orb{transition:transform 2s linear,opacity 2s}
 .cloud{animation:drift 70s linear infinite}@keyframes drift{from{transform:translateX(110px)}to{transform:translateX(340px)}}
 .st{opacity:0;animation:steam 2.4s ease-in infinite}@keyframes steam{0%{opacity:0;transform:translateY(4px)}30%{opacity:.5}100%{opacity:0;transform:translateY(-8px)}}
@@ -154,7 +154,7 @@ footer{text-align:center;color:#666;font-size:.72rem;padding:2rem 0 3rem}
 .frames img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0;display:block}
 .frames img{transition:opacity .25s}
 .frames img.on{opacity:1}
-.screen>svg{visibility:hidden}
+.screen>svg{display:none}
 .frames.shake{animation:tvshake .12s linear infinite}
 @keyframes tvshake{
   0%{transform:scale(1.02) translate(0,0)}
@@ -189,7 +189,7 @@ footer{text-align:center;color:#666;font-size:.72rem;padding:2rem 0 3rem}
         <a href="mailto:s.vaibhav15656@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
       </div>
     </div>
-    <div class="mon-wrap"><div class="mon"><div class="bar"><b></b><span id="tod">VAIBHAV</span></div><div class="screen" id="screen" title="Click to preview other times of day">
+    <div class="mon-wrap"><div class="mon"><div class="bar"><b></b><span id="tod"></span></div><div class="screen" id="screen">
 
 <!-- DAY FRAMES: shown 5:00 AM – 6:30 PM, 3 seconds each -->
 <div class="frames" id="frames">
@@ -406,10 +406,44 @@ function apply(){
   $('lapglow').setAttribute('opacity',(.1+.18*n).toFixed(2));$('lampGlow').setAttribute('opacity',(n*.9).toFixed(2));
   const hh=Math.floor(h),mm=Math.floor((h-hh)*60),ap=hh>=12?'PM':'AM',h12=hh%12||12;
   const name=h<5?'NIGHT':h<12?'MORNING':h<17?'AFTERNOON':h<20?'EVENING':'NIGHT';
-  $('tod').textContent=`VAIBHAV · ${name} · ${String(h12).padStart(2,'0')}:${String(mm).padStart(2,'0')} ${ap}${MODES[mi]!=null?' · PREVIEW':''}`;
+  $('tod').textContent=`${name} · ${String(h12).padStart(2,'0')}:${String(mm).padStart(2,'0')} ${ap}`;
 }
-$('screen').addEventListener('click',()=>{mi=(mi+1)%MODES.length;apply()});
 apply();setInterval(apply,20000);
+})();
+
+/* buttery smooth scrolling (eased glide that settles softly) */
+(()=>{
+if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+const EASE=.075;            /* smaller = smoother & longer glide, bigger = snappier */
+const STEP=1;               /* wheel distance multiplier */
+let target=scrollY,current=scrollY,raf=null;
+const max=()=>document.documentElement.scrollHeight-innerHeight;
+const clamp=v=>Math.max(0,Math.min(max(),v));
+function tick(){
+  current+=(target-current)*EASE;
+  if(Math.abs(target-current)<.4){current=target;scrollTo({top:current,behavior:'instant'});raf=null;return}
+  scrollTo({top:current,behavior:'instant'});
+  raf=requestAnimationFrame(tick);
+}
+const go=()=>{if(!raf)raf=requestAnimationFrame(tick)};
+addEventListener('wheel',e=>{
+  if(e.ctrlKey||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
+  e.preventDefault();
+  const d=e.deltaMode===1?e.deltaY*32:e.deltaMode===2?e.deltaY*innerHeight:e.deltaY;
+  if(!raf){target=current=scrollY}
+  target=clamp(target+d*STEP);go();
+},{passive:false});
+/* keep in sync when scrolled by keyboard / scrollbar / touch */
+addEventListener('scroll',()=>{if(!raf){target=current=scrollY}},{passive:true});
+addEventListener('resize',()=>{target=clamp(target)});
+/* nav links glide too */
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+  const id=a.getAttribute('href').slice(1),el=document.getElementById(id);
+  if(!el)return;
+  e.preventDefault();
+  if(!raf){target=current=scrollY}
+  target=clamp(id==='home'?0:el.getBoundingClientRect().top+scrollY-70);go();
+}));
 })();
 
 /* reveal + nav highlight */
