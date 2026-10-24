@@ -404,37 +404,10 @@ const trailGlow=document.createElementNS(svg.namespaceURI,'path'),trailCore=docu
 for(const p of [trailGlow,trailCore]){p.setAttribute('fill','none');p.setAttribute('stroke-linecap','round');p.setAttribute('stroke-linejoin','round');svg.appendChild(p)}
 trailGlow.setAttribute('stroke','#5aaaff');trailGlow.setAttribute('stroke-width','4');trailGlow.style.filter='drop-shadow(0 0 4px #76bdff) drop-shadow(0 0 12px #287cff)';
 trailCore.setAttribute('stroke','#f5fbff');trailCore.setAttribute('stroke-width','1.35');trailCore.style.filter='drop-shadow(0 0 4px #fff)';
-const strikePaths=Array.from({length:7},(_,i)=>{const p=document.createElementNS(svg.namespaceURI,'path');p.setAttribute('fill','none');p.setAttribute('stroke-linecap','round');p.setAttribute('stroke-linejoin','round');p.setAttribute('stroke',i%2?'#a6d7ff':'#fff');p.setAttribute('stroke-width',i===0?'3.5':i<3?'1.6':'.9');p.style.filter='drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px #69baff) drop-shadow(0 0 22px #287cff)';p.style.opacity='0';svg.appendChild(p);return p});
-const screenFlash=document.createElement('div');Object.assign(screenFlash.style,{position:'fixed',inset:'0',zIndex:'44',pointerEvents:'none',background:'rgba(170,210,255,.22)',opacity:'0'});document.body.appendChild(screenFlash);
 const strands=Array.from({length:35},(_,i)=>{const p=document.createElementNS(svg.namespaceURI,'path');p.setAttribute('fill','none');p.setAttribute('stroke',i%5===0?'#fff':i%2?'#73b6ff':'#b9dcff');p.setAttribute('stroke-width',i%5===0?1.35:i%2?.9:1.8);p.setAttribute('stroke-linecap','round');p.style.filter='drop-shadow(0 0 2px #fff) drop-shadow(0 0 5px rgba(110,175,255,.98)) drop-shadow(0 0 12px rgba(55,125,255,.9))';svg.appendChild(p);return p});
 let strandShape=[],shapeFor=null;
 function randomizeStrands(el){shapeFor=el;strandShape=strands.map((_,i)=>{const angle=Math.random()*Math.PI*2,reach=Math.random()*12;return{angle,reach,anchor:Math.random(),bend:(Math.random()-.5)*90,width:.45+Math.random()*1.5,opacity:.38+Math.random()*.6,phase:Math.random()*Math.PI*2}})}
 document.body.appendChild(svg);
-let rainingNow=false,weatherPoint=null,weatherCheckBusy=false;
-async function updateLocalRain(){
- if(!weatherPoint||weatherCheckBusy)return;
- weatherCheckBusy=true;rainingNow=false;
- try{
-  const url=`https://api.open-meteo.com/v1/forecast?latitude=${weatherPoint.latitude}&longitude=${weatherPoint.longitude}&current=rain,showers,weather_code&timezone=auto`;
-  const response=await fetch(url,{cache:'no-store'});if(!response.ok)throw new Error('Weather lookup failed');
-  const current=(await response.json()).current;if(!current)throw new Error('No current weather data');
-  const code=Number(current.weather_code),rainCodes=(code>=51&&code<=69)||(code>=80&&code<=82);
-  rainingNow=Number(current.rain)>0||Number(current.showers)>0||rainCodes;
- }catch(_){rainingNow=false}finally{weatherCheckBusy=false}
-}
-if('geolocation'in navigator){
- navigator.geolocation.getCurrentPosition(pos=>{weatherPoint=pos.coords;updateLocalRain();setInterval(updateLocalRain,10*60*1000)},()=>{rainingNow=false},{enableHighAccuracy:false,maximumAge:5*60*1000,timeout:12000});
-}
-function lightningStrike(){
- if(document.hidden||!rainingNow)return;
- const w=innerWidth,h=innerHeight,startX=w*(.15+Math.random()*.7),endX=clamp(startX+(Math.random()-.5)*w*.85,8,w-8),steps=9,points=[];
- for(let i=0;i<=steps;i++){const t=i/steps;points.push({x:startX+(endX-startX)*t+(i===0||i===steps?0:(Math.random()-.5)*w*.12),y:h*.08+t*h*.84})}
- const main=points.map((q,i)=>(i?'L':'M')+`${q.x} ${q.y}`).join(' ');strikePaths[0].setAttribute('d',main);
- for(let i=1;i<strikePaths.length;i++){const at=2+Math.floor(Math.random()*6),origin=points[at],dir=Math.random()<.5?-1:1,len=w*(.06+Math.random()*.16),branch=`M${origin.x} ${origin.y} l${dir*len*.42} ${h*(.05+Math.random()*.06)} l${dir*len*.58} ${h*(.05+Math.random()*.1)}`;strikePaths[i].setAttribute('d',branch)}
- const pulse=(level)=>{strikePaths.forEach((p,i)=>p.style.opacity=String(level*(i===0?1:.55+Math.random()*.4)));screenFlash.style.opacity=String(level*.7)};
- pulse(.95);setTimeout(()=>pulse(.12),55);setTimeout(()=>pulse(.82),105);setTimeout(()=>pulse(.04),145);setTimeout(()=>{pulse(0);strikePaths.forEach(p=>p.setAttribute('d',''))},205);
-}
-setInterval(lightningStrike,8000);
 let pointer={x:-1000,y:-1000},active=null,raf=0,last=performance.now();
 const trail=[];
 const motion=new Map(targets.map(el=>[el,{x:0,y:0,vx:0,vy:0}]));
