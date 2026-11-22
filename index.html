@@ -209,9 +209,9 @@ $("soc").innerHTML=SITE.links.map(l=>`<a class="interactive-control" href="${l[1
  if("IntersectionObserver"in window)new IntersectionObserver(entries=>{if(entries[0].isIntersecting){activityInView=true;playHeatmapWaves()}},{threshold:.28}).observe($("activity"));else activityInView=true;
  const empty=Object.create(null);grid("github",empty);grid("leetcode",empty);
  alignToCurrent();
- function loadGithub(){fetch(`https://github-contributions-api.jogruber.de/v4/svaibhav15656-create?y=last&refresh=${Date.now()}`,{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{
-   const values=Object.fromEntries((d.contributions||[]).map(x=>[x.date,x.count]));grid("github",values);if(!animatedMaps.has("github"))$("githubHeatmap").classList.add("awaiting-wave");loadedMaps.add("github");playHeatmapWaves()
-  }).catch(()=>$("githubStatus").textContent="Activity unavailable — view profile ↗")}
+ function loadGithub(){const githubUrl=new URL("https://github.com/users/svaibhav15656-create/contributions");githubUrl.search=new URLSearchParams({from:iso(weekStarts[0]),to:iso(today)});fetch("https://proxy.cors.dev/"+githubUrl.toString(),{cache:"no-store"}).then(r=>r.ok?r.text():Promise.reject()).then(html=>{
+   const doc=new DOMParser().parseFromString(html,"text/html"),cells=[...doc.querySelectorAll("td.ContributionCalendar-day[data-date]")];if(!cells.length)throw new Error("GitHub contribution calendar was not returned");const values={};cells.forEach(cell=>{const tooltip=doc.querySelector(`tool-tip[for="${cell.id}"]`)?.textContent||"",match=tooltip.match(/(\d+) contributions?/i),count=Number(match?match[1]:cell.dataset.level||0);values[cell.dataset.date]=Number.isFinite(count)?count:0});grid("github",values);if(!animatedMaps.has("github"))$("githubHeatmap").classList.add("awaiting-wave");loadedMaps.add("github");playHeatmapWaves()
+ }).catch(()=>$("githubStatus").textContent="Activity unavailable — view profile ↗")}
  const leetcodeQuery="query userProfileCalendar($username: String!) { matchedUser(username: $username) { userCalendar { submissionCalendar totalActiveDays streak } } }";
  const leetcodeUrl=new URL("https://leetcode.com/graphql");leetcodeUrl.search=new URLSearchParams({query:leetcodeQuery,variables:JSON.stringify({username:"vaibhav_vvv"})});
  /* LeetCode blocks browser cross-origin requests; this GET proxy only reads this public profile calendar. */
@@ -219,7 +219,7 @@ $("soc").innerHTML=SITE.links.map(l=>`<a class="interactive-control" href="${l[1
   const calendarData=d.data?.matchedUser?.userCalendar;if(!calendarData)throw new Error("LeetCode profile was not returned");const calendar=calendarData.submissionCalendar?JSON.parse(calendarData.submissionCalendar):{};const values={};Object.entries(calendar).forEach(([stamp,count])=>values[iso(new Date(Number(stamp)*1000))]=count);grid("leetcode",values);if(!animatedMaps.has("leetcode"))$("leetcodeHeatmap").classList.add("awaiting-wave");loadedMaps.add("leetcode");playHeatmapWaves();
   $("leetcodeStatus").textContent=`${dates.filter(d=>d<=today).reduce((sum,d)=>sum+(values[iso(d)]||0),0).toLocaleString()} submissions in the past one year`;$("leetcodeDays").textContent=calendarData.totalActiveDays??"—";$("leetcodeStreak").textContent=calendarData.streak??"—";$("leetcodeMetrics").hidden=false
  }).catch(()=>$("leetcodeStatus").textContent="Activity unavailable — view profile ↗")}
- loadGithub();loadLeetcode();setInterval(()=>{loadGithub();loadLeetcode()},300000);
+ loadGithub();loadLeetcode();addEventListener("focus",()=>{loadGithub();loadLeetcode()});setInterval(()=>{loadGithub();loadLeetcode()},300000);
 })();
 document.querySelector(".hero").id="top";
 function ready(){$("photo").textContent="";$("photo").classList.add("empty");$("photo2").classList.add("empty");$("fly").style.display="block";dispatchEvent(new Event("resize"))}
