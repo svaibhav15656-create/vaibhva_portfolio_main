@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f2efe9;--fg:#111;--mut:#6b6b66;--line:#d9d5cc;--card:#e9e5dd;
+:root{--bg:#f2efe9;--fg:#111;--mut:#6b6b66;--line:#d9d5cc;--card:#e9e5dd;--heat-0:#dce8df;--heat-1:#9bd9ae;--heat-2:#39bf63;--heat-3:#079443;--heat-4:#006d32;
  --f:"Space Grotesk",system-ui,sans-serif;--m:"JetBrains Mono",ui-monospace,monospace}
-[data-theme=dark]{--bg:#0e0e0f;--fg:#f2efe9;--mut:#8f8f8a;--line:#2a2a2c;--card:#171718}
+[data-theme=dark]{--bg:#0e0e0f;--fg:#f2efe9;--mut:#8f8f8a;--line:#2a2a2c;--card:#171718;--heat-0:#373a38;--heat-1:#006d32;--heat-2:#008a3e;--heat-3:#00a547;--heat-4:#65d978}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:110px}
 body{margin:0;background:var(--bg);color:var(--fg);font:400 1.05rem/1.6 var(--f);padding-top:env(safe-area-inset-top,0)}
 a{color:inherit}.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
@@ -69,6 +69,7 @@ h1 .l{left:-.55em}h1 .rr{right:-.7em;top:auto;bottom:.1em}
 .ap{max-width:70ch;color:var(--mut);margin:56px 0 0}
 @media(max-width:860px){.about-grid{grid-template-columns:1fr}.about-grid .photo{max-width:300px}}
 section{padding:90px 0;border-top:1px solid var(--line)}
+.activity{padding-top:72px}.activity-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.heatmap-card{background:var(--card);border:1px solid color-mix(in srgb,var(--heat-2) 20%,var(--line));border-radius:16px;padding:22px;min-width:0;box-shadow:inset 0 1px #fff1}.heatmap-head{display:flex;align-items:start;justify-content:space-between;gap:12px;margin-bottom:18px}.heatmap-head h3{margin:0;font:700 1.25rem/1.1 var(--f);letter-spacing:-.025em}.heatmap-actions{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:10px}.heatmap-metrics{display:flex;gap:10px;color:var(--mut);font-size:.72rem;white-space:nowrap}.heatmap-metrics b{color:var(--fg);font-weight:700}.heatmap-head a{color:var(--heat-3);font-size:.86rem;text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--heat-3) 45%,transparent)}.heatmap-head a:hover{color:var(--heat-4);border-color:var(--heat-4)}.heatmap-status{color:var(--mut);font-size:.82rem}.heatmap-scroll{overflow-x:auto;padding-bottom:4px}.heatmap-months{display:grid;grid-template-columns:repeat(53,11px);gap:4px;min-width:791px;height:16px;color:var(--mut);font:10px/1 var(--m)}.heatmap-months span{white-space:nowrap}.heatmap{display:grid;grid-template-rows:repeat(7,11px);grid-auto-flow:column;grid-auto-columns:11px;gap:4px;min-width:791px}.heatmap i{display:block;width:11px;height:11px;border-radius:3px;background:var(--heat-0);box-shadow:inset 0 0 0 1px #00000008}.heatmap i[data-level="1"]{background:var(--heat-1)}.heatmap i[data-level="2"]{background:var(--heat-2)}.heatmap i[data-level="3"]{background:var(--heat-3)}.heatmap i[data-level="4"]{background:var(--heat-4);box-shadow:0 0 9px color-mix(in srgb,var(--heat-4) 32%,transparent)}.heatmap i:hover{outline:2px solid var(--fg);outline-offset:2px;position:relative;z-index:1}.heatmap-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;color:var(--mut);font-size:.8rem}.heatmap-legend{display:flex;align-items:center;gap:4px}.heatmap-legend i{width:10px;height:10px;border-radius:2px;background:var(--heat-0)}.heatmap-legend i:nth-of-type(2){background:var(--heat-1)}.heatmap-legend i:nth-of-type(3){background:var(--heat-2)}.heatmap-legend i:nth-of-type(4){background:var(--heat-3)}.heatmap-legend i:nth-of-type(5){background:var(--heat-4)}@media(max-width:860px){.activity-grid{grid-template-columns:1fr}.activity{padding-top:70px}.heatmap-actions{justify-content:flex-start}.heatmap-metrics{width:100%}}
 .sh{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:34px}
 h2{font:700 clamp(2.2rem,6vw,4.2rem)/1 var(--f);letter-spacing:-.04em;margin:0}.sh p{margin:0;color:var(--mut)}
 .stats{display:flex;gap:48px;flex-wrap:wrap;margin-top:26px}.stats b{display:block;font:700 2.6rem/1 var(--f);letter-spacing:-.04em}.stats span{color:var(--mut);font-size:.9rem}
@@ -118,6 +119,10 @@ footer{background:#000;color:#f2efe9;padding:44px 0 0}
   <div class="photo" id="photo2"></div>
   <div class="ab-r"><p class="lead" id="about-t"></p><a class="btn" href="#projects">Explore projects ↗</a></div>
 </div><p class="ap" id="about-p"></p><div class="stats" id="stats"></div></div></section>
+<section class="activity" id="activity"><div class="wrap"><div class="sh rv"><h2>In the flow.</h2><p>A year of commits and problem solving</p></div><div class="activity-grid rv">
+  <article class="heatmap-card"><div class="heatmap-head"><div><h3>GitHub activity</h3><span class="heatmap-status" id="githubStatus">Loading contributions…</span></div><a href="https://github.com/svaibhav15656-create" target="_blank" rel="noopener">View profile ↗</a></div><div class="heatmap-scroll"><div class="heatmap-months" id="githubMonths"></div><div class="heatmap" id="githubHeatmap" aria-label="GitHub contribution heatmap, current date at right"></div></div><div class="heatmap-foot"><span>← Last year</span><span class="heatmap-legend"><i></i><i></i><i></i><i></i><i></i></span><span>Today</span></div></article>
+  <article class="heatmap-card"><div class="heatmap-head"><div><h3>LeetCode activity</h3><span class="heatmap-status" id="leetcodeStatus">Loading submissions…</span></div><div class="heatmap-actions"><div class="heatmap-metrics" id="leetcodeMetrics" hidden><span>Active days: <b id="leetcodeDays"></b></span><span>Max streak: <b id="leetcodeStreak"></b></span></div><a href="https://leetcode.com/u/vaibhav_vvv/" target="_blank" rel="noopener">View profile ↗</a></div></div><div class="heatmap-scroll"><div class="heatmap-months" id="leetcodeMonths"></div><div class="heatmap" id="leetcodeHeatmap" aria-label="LeetCode submission heatmap, current date at right"></div></div><div class="heatmap-foot"><span>← Last year</span><span class="heatmap-legend"><i></i><i></i><i></i><i></i><i></i></span><span>Today</span></div></article>
+</div></div></section>
 <section id="skills"><div class="wrap"><div class="sh rv"><h2>Skills</h2><p>What I work with</p></div><div class="grid" id="skillGrid"></div></div></section>
 <section id="projects"><div class="wrap"><div class="sh rv"><h2>Projects</h2><p>Selected work</p></div><div class="grid" id="projGrid"></div></div></section>
 <section id="experience"><div class="wrap"><div class="sh rv"><h2>Experience</h2></div><ol class="tl" id="tl"></ol></div></section>
@@ -181,6 +186,36 @@ $("projGrid").innerHTML=SITE.projects.map(p=>`<div class="card rv"><h3>${p[0]}</
 $("tl").innerHTML=SITE.jobs.map(j=>`<li class="rv${j[4]?" cur":""}"><div class="tl-card"><time>${j[0]}</time><h3>${j[1]}</h3><p>${j[2]}</p><p>${j[3]}</p></div></li>`).join("");
 $("mail").textContent=SITE.email;$("mail").href="mailto:"+SITE.email;$("fmail").textContent=SITE.email+" ↗";$("fmail").href="mailto:"+SITE.email;
 $("soc").innerHTML=SITE.links.map(l=>`<a class="interactive-control" href="${l[1]}" target="_blank" rel="noopener"><span>${l[0]}</span></a>`).join("");
+/* activity heatmaps — live public profile data, styled to inherit the portfolio theme */
+(function(){
+ const DAY=864e5,today=new Date();today.setHours(0,0,0,0);
+ /* The current week sits at the far right; scroll left to travel backwards through the year. */
+ const currentWeek=new Date(today);currentWeek.setDate(currentWeek.getDate()-currentWeek.getDay());
+ const weekStarts=Array.from({length:53},(_,n)=>{const d=new Date(currentWeek);d.setDate(d.getDate()-(52-n)*7);return d});
+ /* The final week is intentionally cut off at today: there are no future-day placeholders. */
+ const dates=weekStarts.flatMap(week=>Array.from({length:7},(_,n)=>{const d=new Date(week);d.setDate(d.getDate()+n);return d}).filter(d=>d<=today));
+ const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+ function grid(name,values){const el=$(name+"Heatmap"),months=$(name+"Months"),status=$(name+"Status");
+  const max=Math.max(0,...dates.map(d=>values[iso(d)]||0)),level=n=>!n?0:max===1?4:Math.min(4,Math.ceil(n/max*4));
+  el.innerHTML=dates.map(d=>`<i data-level="${level(values[iso(d)]||0)}" title="${iso(d)}: ${values[iso(d)]||0}"></i>`).join("");
+  months.innerHTML=weekStarts.map((d,n)=>n===0||d.getMonth()!==weekStarts[n-1].getMonth()?`<span style="grid-column:${n+1}">${d.toLocaleString([], {month:"short"})}</span>`:"").join("");
+ const total=dates.filter(d=>d<=today).reduce((sum,d)=>sum+(values[iso(d)]||0),0);status.textContent=total?`${total.toLocaleString()} contributions in the last year`:"No public activity in the last year";
+ }
+ let alignedToCurrent=false;function alignToCurrent(){if(alignedToCurrent)return;requestAnimationFrame(()=>{document.querySelectorAll(".heatmap-scroll").forEach(el=>el.scrollLeft=el.scrollWidth);alignedToCurrent=true})}
+ const empty=Object.create(null);grid("github",empty);grid("leetcode",empty);
+ alignToCurrent();
+ function loadGithub(){fetch(`https://github-contributions-api.jogruber.de/v4/svaibhav15656-create?y=last&refresh=${Date.now()}`,{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{
+   const values=Object.fromEntries((d.contributions||[]).map(x=>[x.date,x.count]));grid("github",values)
+  }).catch(()=>$("githubStatus").textContent="Activity unavailable — view profile ↗")}
+ const leetcodeQuery="query userProfileCalendar($username: String!) { matchedUser(username: $username) { userCalendar { submissionCalendar totalActiveDays streak } } }";
+ const leetcodeUrl=new URL("https://leetcode.com/graphql");leetcodeUrl.search=new URLSearchParams({query:leetcodeQuery,variables:JSON.stringify({username:"vaibhav_vvv"})});
+ /* LeetCode blocks browser cross-origin requests; this GET proxy only reads this public profile calendar. */
+ function loadLeetcode(){fetch("https://proxy.cors.dev/"+leetcodeUrl.toString(),{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{
+  const calendarData=d.data?.matchedUser?.userCalendar;if(!calendarData)throw new Error("LeetCode profile was not returned");const calendar=calendarData.submissionCalendar?JSON.parse(calendarData.submissionCalendar):{};const values={};Object.entries(calendar).forEach(([stamp,count])=>values[iso(new Date(Number(stamp)*1000))]=count);grid("leetcode",values);
+  $("leetcodeStatus").textContent=`${dates.filter(d=>d<=today).reduce((sum,d)=>sum+(values[iso(d)]||0),0).toLocaleString()} submissions in the past one year`;$("leetcodeDays").textContent=calendarData.totalActiveDays??"—";$("leetcodeStreak").textContent=calendarData.streak??"—";$("leetcodeMetrics").hidden=false
+ }).catch(()=>$("leetcodeStatus").textContent="Activity unavailable — view profile ↗")}
+ loadGithub();loadLeetcode();setInterval(()=>{loadGithub();loadLeetcode()},300000);
+})();
 document.querySelector(".hero").id="top";
 function ready(){$("photo").textContent="";$("photo").classList.add("empty");$("photo2").classList.add("empty");$("fly").style.display="block";dispatchEvent(new Event("resize"))}
 $("fly").innerHTML=`<div class="photo-flip"><div class="photo-face"><img src="${SITE.heroChild}" onerror="this.onerror=null;this.src='${SITE.portrait}'" alt="Vaibhav as a child"></div><div class="photo-face back"><img src="${SITE.heroNow}" onerror="this.onerror=null;this.src='${SITE.portrait}'" alt="Vaibhav today"></div></div>`;ready();
